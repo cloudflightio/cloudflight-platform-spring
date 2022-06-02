@@ -1,0 +1,51 @@
+plugins {
+    id 'java-platform'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+allprojects {
+    configurations {
+        api {
+            exclude group: 'junit'
+            exclude group: 'org.junit.vintage'
+        }
+    }
+}
+
+dependencies {
+    // platform-spring-test-bom should inherit from platform-spring-bom (thus, also from spring boot)
+    api platform(project(':platform-spring-bom'))
+    api platform(libs.quickperf.bom)
+
+    // with the following few lines we put some 3rd party libs automatically to the test-classpath of all
+    // used projects.
+    // why exactly those? because not only we think that they are useful and should be used
+    // see https://phauer.com/2018/best-practices-unit-testing-kotlin/
+    api(libs.mockk)
+
+    api(libs.assertj.core)
+
+    api(libs.junit.api)
+    api(libs.junit.params)
+    api(libs.junit.engine)
+}
+
+subprojects {
+    dependencies {
+        // platform-spring-test-bom (and so all libraries from above) goes to the api classpath (implementation)
+        implementation platform(project(':platform-spring-test-bom'))
+    }
+}
+
+afterEvaluate {
+    dependencies {
+        constraints {
+            for (Project p : project.subprojects) {
+                api "$p.group:$p.name:$p.version"
+            }
+        }
+    }
+}

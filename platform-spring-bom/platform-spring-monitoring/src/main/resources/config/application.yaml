@@ -1,0 +1,28 @@
+# TODO replace this file with according logic as per Spring Boot 2.4: https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
+management:
+  info:
+    build:
+      enabled: true
+    git:
+      enabled: true
+      mode: full
+  endpoint:
+    health:
+      show-details: always
+    beans:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    livenessstate:
+      enabled: true

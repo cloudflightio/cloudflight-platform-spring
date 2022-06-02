@@ -1,0 +1,14 @@
+dependencies {
+    implementation project(':platform-spring-bom:platform-spring-context')
+
+    implementation 'io.micrometer:micrometer-core'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+
+    // API to be able to implement own HealthIndicators
+    api 'org.springframework.boot:spring-boot-starter-actuator'
+
+    compileOnly 'org.springframework.security:spring-security-config'
+    compileOnly 'org.springframework.security:spring-security-web'
+}

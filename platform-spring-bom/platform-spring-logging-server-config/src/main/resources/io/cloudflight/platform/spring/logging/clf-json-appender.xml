@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+File appender logback configuration provided for import, equivalent to the programmatic
+initialization performed by Boot
+-->
+
+<included>
+    <appender name="JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- always stick to UTC, instead of the host default-->
+            <timeZone>UTC</timeZone>
+
+            <includeContext>true</includeContext>
+            <includeCallerData>false</includeCallerData>
+
+            <shortenedLoggerNameLength>30</shortenedLoggerNameLength>
+
+            <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                <inlineHash>true</inlineHash>
+                <rootCauseFirst>true</rootCauseFirst>
+                <shortenedClassNameLength>50</shortenedClassNameLength>
+                <maxDepthPerThrowable>30</maxDepthPerThrowable>
+                <!-- cutting off after 10k chars for the stacktrace to avoid going over the 16kB
+                message limit on k8s -->
+                <maxLength>10000</maxLength>
+
+
+                <exclude>com\.sun\..*</exclude>
+                <exclude>java\.lang\.reflect\.Method\.invoke</exclude>
+                <exclude>net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                <exclude>org\.springframework\.aop\..*</exclude>
+                <exclude>org\.springframework\.cglib\..*</exclude>
+                <exclude>org\.springframework\.validation\..*</exclude>
+                <exclude>sun\..*</exclude>
+            </throwableConverter>
+        </encoder>
+    </appender>
+    <appender name="JSON_SPLITTER" class="com.latch.LengthSplittingAppender">
+        <appender-ref ref="JSON_STDOUT"/>
+        <!-- splitting at 1500 chars max for the message to be safe -->
+        <maxLength>1500</maxLength>
+        <sequenceKey>seq</sequenceKey>
+    </appender>
+</included>

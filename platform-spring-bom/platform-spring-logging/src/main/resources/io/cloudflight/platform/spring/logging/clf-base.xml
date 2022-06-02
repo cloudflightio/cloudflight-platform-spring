@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<included>
+    <!-- since we use async logging logs would get lost without this hook -->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <!-- spring boot framework default logging levels -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- KUBERNETES_SERVICE_HOST env variable is set in every k8s env -->
+    <!-- WEBSITE_SITE_NAME env variable is set in every Azure App Service env -->
+    <if condition='isDefined("KUBERNETES_SERVICE_HOST") || isDefined("WEBSITE_SITE_NAME")'>
+        <then>
+            <include resource="io/cloudflight/platform/spring/logging/clf-json-appender.xml"/>
+
+            <root level="INFO">
+                <appender-ref ref="JSON_SPLITTER"/>
+            </root>
+        </then>
+        <else>
+            <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+            <root level="INFO">
+                <appender-ref ref="CONSOLE"/>
+            </root>
+        </else>
+    </if>
+
+</included>

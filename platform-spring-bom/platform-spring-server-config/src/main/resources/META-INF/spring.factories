@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.cloudflight.platform.spring.server.autoconfigure.PlatformServerAutoConfiguration

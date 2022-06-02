@@ -1,0 +1,7 @@
+dependencies {
+    api platform(libs.testcontainers.playtika.bom)
+
+    runtimeOnly 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
+    runtimeOnly(libs.testcontainers.junit4.mock)
+}

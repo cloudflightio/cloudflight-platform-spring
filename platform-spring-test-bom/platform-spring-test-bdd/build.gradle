@@ -1,0 +1,9 @@
+dependencies {
+    api project(':platform-spring-test-bom:platform-spring-test')
+
+    api(libs.jgiven.junit5)
+    api(libs.jgiven.spring.junit5)
+    api(libs.jgiven.kotlin)
+
+    runtimeOnly(libs.jgiven.html5.report)
+}

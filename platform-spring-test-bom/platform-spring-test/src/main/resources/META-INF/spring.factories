@@ -1,0 +1,2 @@
+org.springframework.test.context.ContextCustomizerFactory=\
+io.cloudflight.platform.spring.test.context.ApplicationStartupCustomizerFactory

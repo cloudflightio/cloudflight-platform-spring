@@ -1,0 +1,10 @@
+dependencies {
+    implementation project(':platform-spring-bom:platform-spring-logging')
+    api('io.opentelemetry:opentelemetry-api')
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation(libs.logback.logstash.encoder)
+
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
+}

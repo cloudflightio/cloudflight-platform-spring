@@ -1,0 +1,15 @@
+dependencies {
+    api project(":platform-spring-bom:platform-spring-cloud-storage:platform-spring-cloud-storage-api")
+    implementation project(":platform-spring-bom:platform-spring-context")
+
+    implementation 'com.azure.spring:azure-spring-boot-starter-storage'
+    runtimeOnly 'com.azure.spring:azure-spring-boot-starter-keyvault-secrets'
+    implementation 'com.azure:azure-identity'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation project(":platform-spring-test-bom:platform-spring-test-testcontainers")
+    testImplementation project(":platform-spring-bom:platform-spring-json")
+    testImplementation 'com.playtika.testcontainers:embedded-azurite'
+    testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+
+}

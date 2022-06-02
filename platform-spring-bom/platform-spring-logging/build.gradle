@@ -1,0 +1,19 @@
+dependencies {
+    api(libs.kotlin.logging)
+
+    // required for conditionals in logback
+    runtimeOnly 'org.codehaus.janino:janino'
+
+    api('org.slf4j:slf4j-api')
+
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.aspectj:aspectjweaver'
+
+    implementation('org.slf4j:slf4j-api')
+
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+
+    // required for org/springframework/boot/logging/logback/defaults.xml and
+    implementation 'org.springframework.boot:spring-boot'
+}

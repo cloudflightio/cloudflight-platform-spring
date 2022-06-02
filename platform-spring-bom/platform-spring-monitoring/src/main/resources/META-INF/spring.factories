@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.cloudflight.platform.spring.monitoring.autoconfigure.ManagementSecurityAutoConfiguration
+org.springframework.boot.env.EnvironmentPostProcessor=\
+io.cloudflight.platform.spring.monitoring.autoconfigure.ManagementServerPortEnvironmentPostProcessor

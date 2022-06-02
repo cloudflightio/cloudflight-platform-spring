@@ -1,0 +1,11 @@
+
+cloudflight:
+  i18n:
+    locales:
+      - JAPANESE
+      - ENGLISH
+    primary: JAPANESE
+
+spring:
+  messages:
+    basename: classpath:/messages

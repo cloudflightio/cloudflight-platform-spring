@@ -1,0 +1,20 @@
+dependencies {
+    implementation project(':platform-spring-bom:platform-spring-json')
+    implementation project(':platform-spring-bom:platform-spring-logging')
+
+    testImplementation project(':platform-spring-test-bom:platform-spring-test')
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testRuntimeOnly 'com.h2database:h2'
+
+    testImplementation 'org.awaitility:awaitility'
+
+    api 'org.springframework.amqp:spring-rabbit'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
+
+    testImplementation project(':platform-spring-test-bom:platform-spring-test-testcontainers')
+    testImplementation 'com.playtika.testcontainers:embedded-rabbitmq'
+}

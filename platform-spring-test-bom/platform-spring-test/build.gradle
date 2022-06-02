@@ -1,0 +1,15 @@
+dependencies {
+    api project(':platform-spring-bom:platform-spring-context')
+    api project(':platform-spring-bom:platform-spring-logging')
+    api project(':platform-spring-bom:platform-spring-json')
+
+    api 'org.springframework:spring-test'
+    api 'org.springframework.boot:spring-boot-starter-test'
+    api 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    api 'org.quickperf:quick-perf-junit5'
+
+
+    testImplementation 'io.swagger:swagger-annotations'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+}

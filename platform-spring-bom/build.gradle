@@ -1,0 +1,65 @@
+plugins {
+    id 'java-platform'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+allprojects {
+    configurations {
+        api {
+            exclude group: 'junit'
+            exclude group: 'org.junit.vintage'
+        }
+    }
+}
+
+dependencies {
+    api platform(libs.opentelemetry.bom)
+    api platform(libs.spring.boot.bom)
+    api platform(libs.spring.cloud.bom)
+
+    constraints {
+        // we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
+        api(libs.guava)
+
+        api(libs.springfox.swagger2)
+        api(libs.swagger.annotations2)
+        api(libs.swagger.annotations3)
+
+        api(libs.shedlock.spring)
+        api(libs.shedlock.provider.redis.spring)
+
+        api(libs.jackson.databind.nullable)
+
+        api(libs.azure.starter)
+        api(libs.azure.starter.keyvault)
+        api(libs.azure.identity)
+    }
+}
+
+subprojects { p ->
+    if (!p.name.equals("platform-spring-cloud-storage")) {
+        dependencies {
+            implementation platform(project(':platform-spring-bom'))
+            testImplementation platform(project(':platform-spring-test-bom'))
+
+            testImplementation project(':platform-spring-test-bom:platform-spring-test-bdd')
+
+            if (p.plugins.hasPlugin(org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper)) {
+                kapt platform(project(':platform-spring-bom'))
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    dependencies {
+        constraints {
+            for (Project p : project.subprojects) {
+                api "$p.group:$p.name:$p.version"
+            }
+        }
+    }
+}

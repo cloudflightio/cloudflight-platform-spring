@@ -1,0 +1,25 @@
+dependencies {
+    api project(':platform-spring-bom:platform-spring-context')
+
+    api('jakarta.annotation:jakarta.annotation-api')
+    api('jakarta.persistence:jakarta.persistence-api')
+    api('jakarta.validation:jakarta.validation-api')
+
+    api('org.springframework:spring-tx') { transitive = false }
+    implementation('org.springframework:spring-tx')
+
+    api('org.springframework:spring-orm') { transitive = false }
+    implementation('org.springframework:spring-orm')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    api('org.springframework.data:spring-data-commons') { transitive = false }
+    implementation('org.springframework.data:spring-data-commons')
+
+    api('org.springframework.data:spring-data-jpa') { transitive = false }
+    implementation('org.springframework.data:spring-data-jpa')
+
+    compileOnly('com.querydsl:querydsl-jpa')
+
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
+}

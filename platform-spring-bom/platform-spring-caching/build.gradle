@@ -1,0 +1,17 @@
+dependencies {
+    implementation project(':platform-spring-bom:platform-spring-json')
+    implementation project(':platform-spring-bom:platform-spring-logging')
+
+    testImplementation project(':platform-spring-test-bom:platform-spring-test')
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    api('javax.cache:cache-api')
+
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    implementation 'org.springframework.session:spring-session-data-redis'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-security'
+}

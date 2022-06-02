@@ -1,0 +1,14 @@
+dependencies {
+    api project(':platform-spring-bom:platform-spring-validation-api')
+    implementation project(':platform-spring-bom:platform-spring-i18n')
+    implementation project(':platform-spring-bom:platform-spring-json')
+
+    testImplementation project(':platform-spring-test-bom:platform-spring-test')
+
+    api('jakarta.validation:jakarta.validation-api')
+
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
+}

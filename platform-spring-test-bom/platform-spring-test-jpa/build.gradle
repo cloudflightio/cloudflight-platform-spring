@@ -1,0 +1,4 @@
+dependencies {
+    api project(':platform-spring-test-bom:platform-spring-test')
+    api 'org.quickperf:quick-perf-springboot2-sql-starter'
+}

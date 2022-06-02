@@ -1,0 +1,10 @@
+dependencies {
+    implementation project(':platform-spring-bom:platform-spring-json')
+    implementation project(':platform-spring-bom:platform-spring-logging')
+
+    testImplementation project(':platform-spring-test-bom:platform-spring-test')
+
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
+}

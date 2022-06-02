@@ -1,0 +1,89 @@
+buildscript {
+    dependencies {
+        classpath files(libs.class.superclass.protectionDomain.codeSource.location)
+    }
+}
+
+plugins {
+    id "io.cloudflight.autoconfigure-gradle" version "0.4.0"
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+}
+
+allprojects { p ->
+
+    group "io.cloudflight.platform.spring"
+    description "Cloudflight Platform for Spring Boot"
+    version "0.9.0"
+
+    repositories {
+        mavenCentral()
+    }
+
+    if (p.plugins.hasPlugin(JavaLibraryPlugin)) {
+        java {
+            withJavadocJar()
+        }
+    }
+
+    if (p.plugins.hasPlugin(org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper) || p.plugins.hasPlugin(JavaPlatformPlugin)) {
+        apply plugin: 'maven-publish'
+        apply plugin: 'signing'
+
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+                    pom {
+                        name.set(project.name)
+                        description.set(project.description)
+                        url.set("https://github.com/cloudflightio/cloudflight-platform-spring")
+                        licenses {
+                            license {
+                                name.set("The Apache License, Version 2.0")
+                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                            }
+                        }
+                        inceptionYear.set("2022")
+                        organization {
+                            name.set("Cloudflight")
+                            url.set("https://cloudflight.io")
+                        }
+                        developers {
+                            developer {
+                                id.set("cloudflightio")
+                                name.set("Cloudflight Team")
+                                email.set("opensource@cloudflight.io")
+                            }
+                        }
+                        scm {
+                            connection.set("scm:ggit@github.com:cloudflightio/cloudflight-platform-spring.git")
+                            developerConnection.set("scm:git@github.com:cloudflightio/cloudflight-platform-spring.git")
+                            url.set("https://github.com/cloudflightio/cloudflight-platform-spring")
+                        }
+                    }
+                }
+            }
+        }
+
+        signing {
+            setRequired {
+                System.getenv("PGP_SECRET") != null
+            }
+            useInMemoryPgpKeys(System.getenv("PGP_SECRET"), System.getenv("PGP_PASSPHRASE"))
+            sign(publishing.publications.getByName("maven"))
+        }
+    }
+}
+
+
+
+nexusPublishing {
+    repositories {
+        sonatype {  //only for users registered in Sonatype after 24 Feb 2021
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username.set(System.getenv("MAVEN_USERNAME"))
+            password.set(System.getenv("MAVEN_PASSWORD"))
+        }
+    }
+}

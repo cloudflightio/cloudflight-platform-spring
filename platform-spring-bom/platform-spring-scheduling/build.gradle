@@ -1,0 +1,11 @@
+dependencies {
+    implementation project(':platform-spring-bom:platform-spring-caching')
+
+    api('net.javacrumbs.shedlock:shedlock-spring') { transitive = false }
+    implementation 'net.javacrumbs.shedlock:shedlock-spring'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring'
+
+    api('org.springframework:spring-context') { transitive = false }
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+}

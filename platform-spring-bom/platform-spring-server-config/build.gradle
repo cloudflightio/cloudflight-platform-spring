@@ -1,0 +1,7 @@
+dependencies {
+    api project(':platform-spring-bom:platform-spring-context')
+    api project(':platform-spring-bom:platform-spring-monitoring')
+    runtimeOnly project(':platform-spring-bom:platform-spring-logging-server-config')
+
+    testImplementation project(':platform-spring-test-bom:platform-spring-test')
+}
