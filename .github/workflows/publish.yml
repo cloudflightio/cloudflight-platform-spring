@@ -27,24 +27,17 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: "temurin"
-          java-version: "17"
+          java-version: "11"
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-      - name: Publish Plugin
+      - name: Publish
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: |
-            ${{ steps.version_param.outputs.version_param }}
-            publishPlugins
-          cache-read-only: true
+          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
-          GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
-          GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
-          RELEASE: true
-      - name: Add artifacts to release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/libs/*.jar
-          token: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
