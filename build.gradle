@@ -13,7 +13,7 @@ allprojects { p ->
 
     group "io.cloudflight.platform.spring"
     description "Cloudflight Platform for Spring Boot"
-    version "0.9.0"
+    version "0.9.1"
 
     repositories {
         mavenCentral()
@@ -25,56 +25,69 @@ allprojects { p ->
         }
     }
 
-    if (p.plugins.hasPlugin(org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper) || p.plugins.hasPlugin(JavaPlatformPlugin)) {
+    if (p.plugins.hasPlugin(org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper) || p.name.endsWith("-bom")) {
         apply plugin: 'maven-publish'
         apply plugin: 'signing'
 
-        publishing {
-            publications {
-                maven(MavenPublication) {
-                    from components.java
-                    pom {
-                        name.set(project.name)
-                        description.set(project.description)
-                        url.set("https://github.com/cloudflightio/cloudflight-platform-spring")
-                        licenses {
-                            license {
-                                name.set("The Apache License, Version 2.0")
-                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                            }
+        p.afterEvaluate {
+            publishing {
+                publications {
+                    maven(MavenPublication) {
+                        if (p.name.endsWith("-bom")) {
+                            from components.getByName("javaPlatform")
+                        } else {
+                            from components.getByName("java")
                         }
-                        inceptionYear.set("2022")
-                        organization {
-                            name.set("Cloudflight")
-                            url.set("https://cloudflight.io")
-                        }
-                        developers {
-                            developer {
-                                id.set("cloudflightio")
-                                name.set("Cloudflight Team")
-                                email.set("opensource@cloudflight.io")
-                            }
-                        }
-                        scm {
-                            connection.set("scm:ggit@github.com:cloudflightio/cloudflight-platform-spring.git")
-                            developerConnection.set("scm:git@github.com:cloudflightio/cloudflight-platform-spring.git")
+                        pom {
+                            name.set(getPublicationName(project))
+                            description.set(project.description)
                             url.set("https://github.com/cloudflightio/cloudflight-platform-spring")
+                            licenses {
+                                license {
+                                    name.set("The Apache License, Version 2.0")
+                                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                                }
+                            }
+                            inceptionYear.set("2022")
+                            organization {
+                                name.set("Cloudflight")
+                                url.set("https://cloudflight.io")
+                            }
+                            developers {
+                                developer {
+                                    id.set("cloudflightio")
+                                    name.set("Cloudflight Team")
+                                    email.set("opensource@cloudflight.io")
+                                }
+                            }
+                            scm {
+                                connection.set("scm:ggit@github.com:cloudflightio/cloudflight-platform-spring.git")
+                                developerConnection.set("scm:git@github.com:cloudflightio/cloudflight-platform-spring.git")
+                                url.set("https://github.com/cloudflightio/cloudflight-platform-spring")
+                            }
                         }
                     }
                 }
             }
-        }
 
-        signing {
-            setRequired {
-                System.getenv("PGP_SECRET") != null
+            signing {
+                setRequired {
+                    System.getenv("PGP_SECRET") != null
+                }
+                useInMemoryPgpKeys(System.getenv("PGP_SECRET"), System.getenv("PGP_PASSPHRASE"))
+                sign(publishing.publications.getByName("maven"))
             }
-            useInMemoryPgpKeys(System.getenv("PGP_SECRET"), System.getenv("PGP_PASSPHRASE"))
-            sign(publishing.publications.getByName("maven"))
         }
     }
 }
 
+private static String getPublicationName(Project project) {
+    if (project == project.rootProject) {
+        return project.rootProject.name
+    } else {
+        return project.rootProject.name + " - " + project.name
+    }
+}
 
 
 nexusPublishing {
