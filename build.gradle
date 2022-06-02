@@ -13,7 +13,7 @@ allprojects { p ->
 
     group "io.cloudflight.platform.spring"
     description "Cloudflight Platform for Spring Boot"
-    version "0.9.1"
+    version "0.9.2"
 
     repositories {
         mavenCentral()
@@ -25,7 +25,7 @@ allprojects { p ->
         }
     }
 
-    if (p.plugins.hasPlugin(org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper) || p.name.endsWith("-bom")) {
+    if (p.plugins.hasPlugin(JavaLibraryPlugin) || p.name.endsWith("-bom")) {
         apply plugin: 'maven-publish'
         apply plugin: 'signing'
 
@@ -92,7 +92,7 @@ private static String getPublicationName(Project project) {
 
 nexusPublishing {
     repositories {
-        sonatype {  //only for users registered in Sonatype after 24 Feb 2021
+        sonatype {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
             username.set(System.getenv("MAVEN_USERNAME"))
