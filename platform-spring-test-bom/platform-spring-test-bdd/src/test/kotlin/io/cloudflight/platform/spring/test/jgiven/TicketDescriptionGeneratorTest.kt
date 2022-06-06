@@ -9,6 +9,6 @@ class TicketDescriptionGeneratorTest {
     fun useDefaultServer() {
         val descriptor = TicketDescriptionGenerator()
         val url = descriptor.generateDescription(null, null, "CLF-3")
-        assertThat(url).isEqualTo("<a href='https://jira.cloudflight.io/browse/CLF-3'>https://jira.cloudflight.io/browse/CLF-3</a>")
+        assertThat(url).isEqualTo("<a href='https://jira.unknown.com/browse/CLF-3'>https://jira.unknown.com/browse/CLF-3</a>")
     }
 }
