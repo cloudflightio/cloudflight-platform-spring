@@ -8,7 +8,7 @@ javaPlatform {
 
 allprojects {
     configurations {
-        api {
+        testImplementation {
             exclude group: 'junit'
             exclude group: 'org.junit.vintage'
         }
