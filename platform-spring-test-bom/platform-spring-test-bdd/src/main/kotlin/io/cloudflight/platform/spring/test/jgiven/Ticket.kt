@@ -6,8 +6,7 @@ import com.tngtech.jgiven.annotation.IsTag
  * Use this annotation on a JUnit5 `@Test` method in order to link the test with one or more tickets in your
  * tracking system.
  *
- * Per default, the server url `https://jira.cloudflight.io/browse/%s` is being used. If your tickets come from
- * another server, set the System.property `jgiven.issue.server.url` to exactly that url.
+ * Set the System.property `jgiven.issue.server.url` to exactly an URL like `https://<your-jira-server-domain>/browse/%s`.
  */
 @IsTag(descriptionGenerator = TicketDescriptionGenerator::class)
 annotation class Ticket(
