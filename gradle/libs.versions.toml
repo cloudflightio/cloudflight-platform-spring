@@ -18,8 +18,8 @@ opentelemetry = "1.11.0"
 
 shedlock = "4.33.0"
 
-spring-boot = "2.6.8"
-spring-cloud = "2021.0.2"
+spring-boot = "2.7.1"
+spring-cloud = "2021.0.3"
 
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
