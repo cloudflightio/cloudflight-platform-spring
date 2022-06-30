@@ -19,6 +19,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @ConditionalOnClass(WebSecurity::class)
 class ManagementSecurityAutoConfiguration {
 
+    /**
+     * Deactivates Spring Security for all management endpoints
+     */
     @Bean
     fun managementEndpointCustomizer(): WebSecurityCustomizer {
         return WebSecurityCustomizer { web -> web.ignoring().requestMatchers(EndpointRequest.toAnyEndpoint()) }
