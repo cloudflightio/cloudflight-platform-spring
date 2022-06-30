@@ -1,22 +1,22 @@
 [versions]
-assertj = "3.22.0"
+assertj = "3.23.1"
 
 azure = "3.14.0"
 azure-identity = "1.4.3"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
-guava = "31.0.1-jre"
+guava = "31.1-jre"
 
 jgiven = "1.2.0"
 jupiter = "5.8.1"
 
-kotlin-logging = "2.1.21"
+kotlin-logging = "2.1.23"
 
 logstash = "6.6"
 
 opentelemetry = "1.11.0"
 
-shedlock = "4.33.0"
+shedlock = "4.37.0"
 
 spring-boot = "2.7.1"
 spring-cloud = "2021.0.3"
@@ -63,5 +63,5 @@ springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.
 swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.2" }
 swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.1.10" }
 
-testcontainers-playtika-bom = { module = "com.playtika.testcontainers:testcontainers-spring-boot-bom", version = "2.2.0" }
+testcontainers-playtika-bom = { module = "com.playtika.testcontainers:testcontainers-spring-boot-bom", version = "2.2.2" }
 testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "2.9.2.Final" }
