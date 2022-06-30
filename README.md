@@ -20,8 +20,8 @@ You can utilize Gradle's dependency management and add both BOMs as platform-dep
 
 ````groovy
 dependencies {
-    api platform("io.cloudflight.platform:platform-bom:$cloudflightPlatformVersion")
-    testImplementation platform("io.cloudflight.platform:platform-test-bom:$cloudflightPlatformVersion")
+    api platform("io.cloudflight.platform.spring:platform-spring-bom:$cloudflightPlatformVersion")
+    testImplementation platform("io.cloudflight.platform.spring:platform-spring-test-bom:$cloudflightPlatformVersion")
 }
 ````
 
@@ -42,12 +42,12 @@ might add code like that to your root `build.gradle`:
 ````groovy
 subprojects { proj ->
     dependencies {
-        api platform("io.cloudflight.platform:platform-bom:$cloudflightPlatformVersion")
-        annotationProcessor platform("io.cloudflight.platform:platform-bom:$cloudflightPlatformVersion")
+        api platform("io.cloudflight.platform.spring:platform-spring-bom:$cloudflightPlatformVersion")
+        annotationProcessor platform("io.cloudflight.platform.spring:platform-spring-bom:$cloudflightPlatformVersion")
         if (proj.plugins.hasPlugin(org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper)) {
-            kapt platform("io.cloudflight.platform:platform-bom:$cloudflightPlatformVersion")
+            kapt platform("io.cloudflight.platform.spring:platform-spring-bom:$cloudflightPlatformVersion")
         }
-        testImplementation platform("io.cloudflight.platform:platform-test-bom:$cloudflightPlatformVersion")
+        testImplementation platform("io.cloudflight.platform.spring:platform-spring-test-bom:$cloudflightPlatformVersion")
     }
 }
 ````
@@ -56,7 +56,7 @@ By adding the platform to your gradle root file, you can add any other submodule
 
 ````groovy
 dependencies {
-    testImplementation('io.cloudflight.platform:platform-jpa-test')
+    testImplementation('io.cloudflight.platform.spring:platform-spring-jpa-test')
 }
 ````
 
@@ -69,7 +69,7 @@ Each module can be added to your code like that:
 
 ````groovy
 dependencies {
-    implementation('io.cloudflight.platform:%MODULE_NAME%')
+    implementation('io.cloudflight.platform.spring:%MODULE_NAME%')
 }
 ````
 
@@ -77,14 +77,14 @@ i.e.
 
 ````groovy
 dependencies {
-    implementation('io.cloudflight.platform:platform-profiling')
+    implementation('io.cloudflight.platform.spring:platform-spring-profiling')
 }
 ````
 
 ### Server Configuration
 
 Whenever you have a module in your code-base that fires up a Spring Boot Server (typically modules with the suffix
-`-server`), then add the module `io.cloudflight.platform:platform-server-config` to your `implementation` classpath.
+`-server`), then add the module `io.cloudflight.platform.spring:platform-spring-server-config` to your `implementation` classpath.
 
 #### Server module identification
 
@@ -120,7 +120,7 @@ If you are running integration tests with `@SpringBootTest`, you don't need to s
 
 ### Environment
 
-The module `io.cloudflight.platform:platform-context` provides the object `ApplicationContextProfiles` which comes with
+The module `io.cloudflight.platform.spring:platform-spring-context` provides the object `ApplicationContextProfiles` which comes with
 constants for our default [Spring profile](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#beans-definition-profiles) names that will be put into the environment.
 
 The profile names to be used then (also in `application.yaml` files) are the following:
@@ -142,7 +142,7 @@ in `ApplicationContextProfiles`. Application configuration files need to be suff
 #### Monitoring Config
 
 Monitoring via Spring Boot Actuator and Prometheus will be activated automatically with the module
-`io.cloudflight.platform:platform-monitoring` (which comes together with `platform-server-config` as mentioned above).
+`io.cloudflight.platform.spring:platform-spring-monitoring` (which comes together with `platform-server-config` as mentioned above).
 
 Important thing to know here is that it automatically sets the port to listen for actuator requests to `server.port + 10000`.
 That means, if your server is running on port 8080, you will find the actuator endpoints on 18080. We are doing this
@@ -151,7 +151,7 @@ accessing this port from outside and don't need to deal with Spring Security in 
 
 #### Logging Config
 
-The module `io.cloudflight.platform:platform-logging-server-config` (which is also being transitively loaded with)
+The module `io.cloudflight.platform.spring:platform-spring-logging-server-config` (which is also being transitively loaded with)
 `platform-server-config` comes with a basic configuration for Logback, especially also preparing our logging mechanism
 for the usage of the ELK stack on production.
 
@@ -163,7 +163,6 @@ Use this file as reference in your `logback-spring.xml` files as follows:
   <include resource="io/cloudflight/platform/spring/logging/clf-base.xml" />
 
   <logger name="io.cloudflight" level="INFO"/>
-  <logger name="at.happyfoto" level="DEBUG"/>
 
   <root level="WARN"/>
 
@@ -194,7 +193,7 @@ fun sayHello(name: String) {
 }
 ````
 
-With `platform-logging`, you get the annotation `io.cloudflight.platform.logging.annotation.LogParam` which you can append on method parameters. The
+With `platform-spring-logging`, you get the annotation `io.cloudflight.platform.logging.annotation.LogParam` which you can append on method parameters. The
 following code does exactly the same:
 
 ````kotlin
@@ -203,7 +202,7 @@ fun sayHello(@LogParam name: String) {
 }
 ````
 
-**WARNING**: We are using Spring AOP here, that means this only works for public methods of Spring beans (like any other Spring-related annotation like `@Transactional`).
+:warning: We are using Spring AOP here, that means this only works for public methods of Spring beans (like any other Spring-related annotation like `@Transactional`).
 
 The annotation `@LogParam` can also be customized and chained, here are some examples:
 
@@ -246,7 +245,7 @@ up the MDC context again after the method call.
 
 #### mdcScope
 
-If you cannot use `@LogParam` for some reason `platform-logging` provides an additional convenient option.
+If you cannot use `@LogParam` for some reason `platform-spring-logging` provides an additional convenient option.
 
 The global function `mdcScope` keeps track of all fields MDC manipulations done in the passed lambda and cleans up for you afterwards.
 
@@ -274,7 +273,7 @@ Please note that the `MDC` available inside the `mdcScope`-functions scope is no
 
 ### JPA
 
-The module `platform-jpa` wraps all required libraries in order to access a relational database
+The module `platform-spring-jpa` wraps all required libraries in order to access a relational database
 with JPA/Hibernate and Spring Data, especially Spring's `spring-data-jpa` and Spring Boot's `spring-boot-starter-data-jpa`.
 
 It also automatically applies `@EnableTransactionManagement`.
@@ -282,7 +281,7 @@ It also automatically applies `@EnableTransactionManagement`.
 #### QueryDSL Support
 
 If you want to use [Query DSL](http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration), then
-`platform-jpa` autoconfigures a `JPQLQueryFactory` which you can use to create QueryDSL queries. Anyways,
+`platform-spring-jpa` autoconfigures a `JPQLQueryFactory` which you can use to create QueryDSL queries. Anyways,
 you need to add QueryDSL to your classpath manually (it does not come by automatically), and also do not
 forget to apply the annotation processor.
 
@@ -290,11 +289,11 @@ If you are using Kotlin entities (which is our preferred way), then your `build.
 
 ````groovy
 dependencies {
-    implementation 'io.cloudflight.platform:platform-jpa'
+    implementation 'io.cloudflight.platform.spring:platform-spring-jpa'
     implementation 'com.querydsl:querydsl-jpa'
 
     kapt 'com.querydsl:querydsl-apt::jpa'
-    kapt 'io.cloudflight.platform:platform-jpa'
+    kapt 'io.cloudflight.platform.spring:platform-spring-jpa'
 }
 ````
 
@@ -341,7 +340,7 @@ TBD
 
 ### Internationalization (I18n)
 
-The module `platform-i18n` provides some additional utility services around Spring's i18n support:
+The module `platform-spring-i18n` provides some additional utility services around Spring's i18n support:
 
 * Tracking available locales
 * Defining a default locale on the server
@@ -350,7 +349,7 @@ Add the module to your server `build.gradle` like that:
 
 ````groovy
 dependencies {
-    implementation 'io.cloudflight.platform:platform-i18n'
+    implementation 'io.cloudflight.platform.spring:platform-spring-i18n'
 }
 ````
 
@@ -384,8 +383,8 @@ cloudflight:
 
 ### Validation
 
-The module `platform-validation` gives you client-side support for validating user input, triggered by validations on the server, and it
-plays well together with `platform-i18n`.
+The module `platform-spring-validation` gives you client-side support for validating user input, triggered by validations on the server, and it
+plays well together with `platform-spring-i18n`.
 
 Form-validations on client-side are insecure (no-one prevents an arbitrary client to bypass those validations),
 but on the other hand web clients (like Angular) cannot easily deal with Spring's Backend Validation Support.
@@ -393,7 +392,7 @@ but on the other hand web clients (like Angular) cannot easily deal with Spring'
 This module builds the bridge between Spring's `BindException` and DTOs which can be serialized as JSON and being used on the client
 to display those validations.
 
-All you need to do is to embed the module `platform-validation`, the `PlatformValidationAutoConfiguration` will automatically create beans
+All you need to do is to embed the module `platform-spring-validation`, the `PlatformValidationAutoConfiguration` will automatically create beans
 to transform all instances of `BindException` or `MethodArgumentNotValidException` to `ErrorResponse` instances which look like the following:
 
 ````kotlin
@@ -417,7 +416,7 @@ TBD
 
 The Cloudflight Platform also provides some modules that help you create Unit or Integration Tests.
 
-As described in the section dependency management, the platform dependency `platform-test-bom`
+As described in the section dependency management, the platform dependency `platform-spring-test-bom`
 automatically adds JUnit5, AssertJ and MockK to your `testImplementation` configuration.
 
 While those modules are handsome in each module and can be used everywhere, there exist additional test modules within the
@@ -428,7 +427,7 @@ Cloudflight platform for more sophisticated tests (mostly for the server modules
 When projects get bigger, very often also the test cases get more complex (especially intergration tests) which often
 has negative impact on the compile/build performance.
 
-In order to have more transparency of how long your tests, the module `platform-test` adds some profiling support on different levels:
+In order to have more transparency of how long your tests, the module `platform-spring-test` adds some profiling support on different levels:
 
 #### Spring Context
 
@@ -442,11 +441,11 @@ in your `logback-test.xml`.
 This module transitively gives you support to test Spring and Spring Boot applications (`spring-test` and `spring-boot-starter-test`),
 that means you can automatically use `@SpringBootTest` in your integration tests.
 
-Include the module `platform-test` as follows in your server module:
+Include the module `platform-spring-test` as follows in your server module:
 
 ````groovy
 dependencies {
-    testImplementation 'io.cloudflight.platform:platform-test'
+    testImplementation 'io.cloudflight.platform.spring:platform-spring-test'
 }
 ````
 
@@ -511,14 +510,14 @@ class HelloWorldController : HelloWorldApi {                                    
 
 #### QuickPerf
 
-Additionally, the module `platform-test` comes with the great library [QuickPerf](https://github.com/quick-perf/doc/wiki/QuickPerf).
+Additionally, the module `platform-spring-test` comes with the great library [QuickPerf](https://github.com/quick-perf/doc/wiki/QuickPerf).
 QuickPerf is a testing library for Java to quickly evaluate and improve some performance-related properties. The QuickPerf extension
-is being registered by `platform-test`, so you don't need to add `@QuickPerfTest` on your test classes.
+is being registered by `platform-spring-test`, so you don't need to add `@QuickPerfTest` on your test classes.
 
 
 ### Test-Support for JPA
 
-The module `platform-test-jpa` leverages QuickPerf support by also adding support to [profile SQL queries](https://github.com/quick-perf/doc/wiki/SQL-annotations).
+The module `platform-spring-test-jpa` leverages QuickPerf support by also adding support to [profile SQL queries](https://github.com/quick-perf/doc/wiki/SQL-annotations).
 
 That way, you can write test methods like that:
 
@@ -536,7 +535,7 @@ for all available annotations including configuration support.
 
 ### Test-Support for Testcontainers
 
-Embed the module `platform-test-testcontainers` to get support for [Testcontainers](https://testcontainers.org) via
+Embed the module `platform-spring-test-testcontainers` to get support for [Testcontainers](https://testcontainers.org) via
 the [wrapper library from playtika](https://github.com/Playtika/testcontainers-spring-boot).
 
 
@@ -548,11 +547,11 @@ found [here](https://github.com/Playtika/testcontainers-spring-boot#supported-se
 #### MariaDB via Testcontainers
 
 Here is an example how to use the MariaDB testcontainer within your `@SpringBootTest`. First, add the dependency to
-`platform-test-testcontainers` along with `embedded-mariadb`:
+`platform-spring-test-testcontainers` along with `embedded-mariadb`:
 
 ````groovy
 dependencies {
-    testImplementation 'io.cloudflight.platform:platform-test-testcontainers'
+    testImplementation 'io.cloudflight.platform.spring:platform-spring-test-testcontainers'
     testImplementation 'com.playtika.testcontainers:embedded-mariadb'
 }
 ````
@@ -590,7 +589,7 @@ to initialize your database just as in production.
 
 ### BDD Support
 
-The module `platform-test:platform-test-bdd` pulls the required libraries of [JGiven](https://jgiven.org) to our classpath. It automatically
+The module `platform-spring-test:platform-test-bdd` pulls the required libraries of [JGiven](https://jgiven.org) to our classpath. It automatically
 registers the `JGivenExtension` on all test JUnit5 test cases, so you don't need to add something like `@ExtendsWith(JGivenExtension.class)` to your test cases.
 
 Have a look at the excellent [JGiven documentation](https://jgiven.org/userguide/) how to use the full strength of those tests. This module also ships
