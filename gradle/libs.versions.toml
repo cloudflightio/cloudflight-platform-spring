@@ -26,8 +26,7 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
 awaitility = { module = "org.awaitility:awaitility", version = "4.1.1" }
 
-azure-starter = { module = "com.azure.spring:azure-spring-boot-starter-storage", version.ref = "azure" }
-azure-starter-keyvault = { module = "com.azure.spring:azure-spring-boot-starter-keyvault-secrets", version.ref = "azure" }
+azure-dependencies-bom = { module = "com.azure.spring:spring-cloud-azure-dependencies", version = "4.2.0" }
 azure-identity = { module = "com.azure:azure-identity", version.ref = "azure-identity" }
 
 jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.1" }

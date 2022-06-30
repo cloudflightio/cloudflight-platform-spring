@@ -1,11 +1,9 @@
 package io.cloudflight.platform.spring.storage.azure.autoconfigure
 
 import com.azure.core.credential.TokenCredential
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.spring.autoconfigure.storage.StorageAutoConfiguration
-import com.azure.spring.autoconfigure.storage.StorageProperties
-import com.azure.spring.utils.ApplicationId
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties
+import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import io.cloudflight.platform.spring.context.ApplicationContextProfiles
@@ -27,20 +25,19 @@ import org.springframework.context.annotation.Profile
  * [DefaultAzureCredentialBuilder] instead of connecting to the local azurite storage.
  */
 @Configuration
-@ConditionalOnProperty("azure.storage.blob-endpoint")
-@AutoConfigureBefore(StorageAutoConfiguration::class)
-class AzureStorageBlobAutoConfiguration {
+@ConditionalOnProperty(value = ["spring.cloud.azure.storage.blob.enabled"], havingValue = "true", matchIfMissing = true)
+@AutoConfigureBefore(AzureStorageBlobAutoConfiguration::class)
+class PlatformAzureStorageBlobAutoConfiguration {
 
     @Bean
     @Profile(ApplicationContextProfiles.PRODUCTION, ApplicationContextProfiles.STAGING)
     fun blobServiceClientBuilder(
-        storageProperties: StorageProperties,
+        storageProperties: AzureStorageBlobProperties,
         tokenCredential: TokenCredential
     ): BlobServiceClientBuilder {
         return BlobServiceClientBuilder()
-            .endpoint(storageProperties.blobEndpoint)
+            .endpoint(storageProperties.endpoint)
             .credential(tokenCredential)
-            .httpLogOptions(HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_BLOB))
     }
 
     @Bean

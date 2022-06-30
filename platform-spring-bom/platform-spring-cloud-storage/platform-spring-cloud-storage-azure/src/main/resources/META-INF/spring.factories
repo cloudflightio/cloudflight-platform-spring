@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.cloudflight.platform.spring.storage.azure.autoconfigure.AzureStorageBlobAutoConfiguration
+io.cloudflight.platform.spring.storage.azure.autoconfigure.PlatformAzureStorageBlobAutoConfiguration

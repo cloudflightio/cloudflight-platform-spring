@@ -32,10 +32,6 @@ dependencies {
         api(libs.shedlock.provider.redis.spring)
 
         api(libs.jackson.databind.nullable)
-
-        api(libs.azure.starter)
-        api(libs.azure.starter.keyvault)
-        api(libs.azure.identity)
     }
 }
 
