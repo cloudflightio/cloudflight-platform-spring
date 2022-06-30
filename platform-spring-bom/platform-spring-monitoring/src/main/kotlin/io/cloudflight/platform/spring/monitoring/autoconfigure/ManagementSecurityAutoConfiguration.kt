@@ -3,6 +3,7 @@ package io.cloudflight.platform.spring.monitoring.autoconfigure
 import io.cloudflight.platform.spring.context.ApplicationContextProfiles
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.env.EnvironmentPostProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,9 +12,11 @@ import org.springframework.core.annotation.Order
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.MapPropertySource
 import org.springframework.core.env.Profiles
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 
 @Configuration
+@ConditionalOnClass(WebSecurity::class)
 class ManagementSecurityAutoConfiguration {
 
     @Bean
