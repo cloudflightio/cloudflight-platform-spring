@@ -1,7 +1,7 @@
 [versions]
 assertj = "3.23.1"
 
-azure = "3.14.0"
+azure = "4.2.0"
 azure-identity = "1.4.3"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
@@ -26,7 +26,7 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
 awaitility = { module = "org.awaitility:awaitility", version = "4.1.1" }
 
-azure-dependencies-bom = { module = "com.azure.spring:spring-cloud-azure-dependencies", version = "4.2.0" }
+azure-dependencies-bom = { module = "com.azure.spring:spring-cloud-azure-dependencies", version.ref = "azure" }
 azure-identity = { module = "com.azure:azure-identity", version.ref = "azure-identity" }
 
 jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.1" }
