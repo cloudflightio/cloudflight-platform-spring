@@ -589,8 +589,24 @@ to initialize your database just as in production.
 
 ### BDD Support
 
-The module `platform-spring-test:platform-test-bdd` pulls the required libraries of [JGiven](https://jgiven.org) to our classpath. It automatically
+The module `io.cloudflight.platform.spring:platform-spring-test-bdd` pulls the required libraries of [JGiven](https://jgiven.org) to our classpath. It automatically
 registers the `JGivenExtension` on all test JUnit5 test cases, so you don't need to add something like `@ExtendsWith(JGivenExtension.class)` to your test cases.
 
 Have a look at the excellent [JGiven documentation](https://jgiven.org/userguide/) how to use the full strength of those tests. This module also ships
 a [Kotlin extension for JGiven](https://github.com/toolisticon/jgiven-kotlin) for better JGiven support in Kotlin.
+
+
+### ArchUnit Support
+
+The module `io.cloudflight.platform.spring:platform-spring-test-archunit` embeds
+embeds the [ArchUnit CleanCode Verifier](https://github.com/cloudflightio/archunit-cleancode-verifier) and provides
+an `AbstractCleanCodeTest` that you can use as follows:
+
+````kotlin
+class ArchitectureTests : AbstractCeanCodeTest() {
+    // your ArchUnit tests go here
+}
+````
+
+It embeds all `CleanCodeRuleSets` from the [ArchUnit CleanCode Verifier](https://github.com/cloudflightio/archunit-cleancode-verifier). 
+Have a look at the documentation in that subproject.

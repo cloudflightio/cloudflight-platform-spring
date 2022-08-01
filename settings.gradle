@@ -20,6 +20,7 @@ include 'platform-spring-bom:platform-spring-validation-api'
 
 include 'platform-spring-test-bom'
 include 'platform-spring-test-bom:platform-spring-test'
+include 'platform-spring-test-bom:platform-spring-test-archunit'
 include 'platform-spring-test-bom:platform-spring-test-bdd'
 include 'platform-spring-test-bom:platform-spring-test-jpa'
 include 'platform-spring-test-bom:platform-spring-test-testcontainers'
