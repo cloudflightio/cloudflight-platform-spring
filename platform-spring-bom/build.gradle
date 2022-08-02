@@ -20,6 +20,11 @@ dependencies {
     api platform(libs.spring.boot.bom)
     api platform(libs.spring.cloud.bom)
 
+    // we also need to add the kotlin-bom here as the Spring-Boot-BOM imports its own version of the kotlin-bom
+    // and we want to override that with our version
+    def kotlinVersion = project.rootProject.extensions.getByType(io.cloudflight.gradle.autoconfigure.AutoConfigureExtension).kotlin.kotlinVersion.get()
+    api platform("org.jetbrains.kotlin:kotlin-bom:" + kotlinVersion)
+
     constraints {
         // we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
         api(libs.guava)
