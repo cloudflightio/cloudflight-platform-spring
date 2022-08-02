@@ -603,10 +603,19 @@ embeds the [ArchUnit CleanCode Verifier](https://github.com/cloudflightio/archun
 an `AbstractCleanCodeTest` that you can use as follows:
 
 ````kotlin
-class ArchitectureTests : AbstractCeanCodeTest() {
+import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests
+import com.tngtech.archunit.junit.AnalyzeClasses
+import io.cloudflight.platform.spring.test.archunit.AbstractCleanCodeTest
+
+@AnalyzeClasses(packagesOf = [ArchitectureTest::class], importOptions = [DoNotIncludeTests::class])
+class ArchitectureTests : AbstractCleanCodeTest() {
     // your ArchUnit tests go here
 }
 ````
 
 It embeds all `CleanCodeRuleSets` from the [ArchUnit CleanCode Verifier](https://github.com/cloudflightio/archunit-cleancode-verifier). 
 Have a look at the documentation in that subproject.
+
+We recommend to put that test into the root package of the module in your repository which
+imports all other modules (typically a `-server`-module). This way, your whole source code is
+being analyzed
