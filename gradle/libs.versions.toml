@@ -64,6 +64,6 @@ springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.
 swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.2" }
 swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.1.10" }
 
-testcontainers-playtika-bom = { module = "com.playtika.testcontainers:testcontainers-spring-boot-bom", version = "2.2.2" }
+testcontainers-playtika-bom = { module = "com.playtika.testcontainers:testcontainers-spring-boot-bom", version = "2.2.5" }
 testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "2.9.2.Final" }
 
