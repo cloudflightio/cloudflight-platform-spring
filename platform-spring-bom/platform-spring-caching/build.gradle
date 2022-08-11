@@ -2,8 +2,6 @@ dependencies {
     implementation project(':platform-spring-bom:platform-spring-json')
     implementation project(':platform-spring-bom:platform-spring-logging')
 
-    testImplementation project(':platform-spring-test-bom:platform-spring-test')
-
     implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     api('javax.cache:cache-api')
@@ -13,5 +11,10 @@ dependencies {
 
     implementation 'org.springframework.session:spring-session-data-redis'
 
+    testImplementation project(':platform-spring-test-bom:platform-spring-test')
+    testImplementation project(':platform-spring-test-bom:platform-spring-test-testcontainers')
+
     testImplementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'com.playtika.testcontainers:embedded-redis'
 }
