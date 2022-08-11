@@ -1,0 +1,6 @@
+spring:
+  session:
+    store-type: redis
+  redis:
+    host: ${embedded.redis.host}
+    port: ${embedded.redis.port}
