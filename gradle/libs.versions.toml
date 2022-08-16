@@ -7,7 +7,7 @@ azure-identity = "1.4.3"
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
 guava = "31.1-jre"
 
-jgiven = "1.2.0"
+jgiven = "1.2.2"
 jupiter = "5.8.1"
 
 kotlin-logging = "2.1.23"
