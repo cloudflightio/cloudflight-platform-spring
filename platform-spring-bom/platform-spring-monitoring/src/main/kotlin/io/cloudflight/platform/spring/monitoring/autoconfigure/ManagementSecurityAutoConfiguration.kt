@@ -12,8 +12,9 @@ import org.springframework.core.annotation.Order
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.MapPropertySource
 import org.springframework.core.env.Profiles
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
+import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @ConditionalOnClass(WebSecurity::class)
@@ -23,8 +24,9 @@ class ManagementSecurityAutoConfiguration {
      * Deactivates Spring Security for all management endpoints
      */
     @Bean
-    fun managementEndpointCustomizer(): WebSecurityCustomizer {
-        return WebSecurityCustomizer { web -> web.ignoring().requestMatchers(EndpointRequest.toAnyEndpoint()) }
+    fun managementEndpointFilter(http: HttpSecurity): SecurityFilterChain {
+        return http.authorizeHttpRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+            .and().build()
     }
 }
 
