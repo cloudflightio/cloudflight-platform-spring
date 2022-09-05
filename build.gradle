@@ -20,7 +20,7 @@ allprojects { p ->
 
     group "io.cloudflight.platform.spring"
     description "Cloudflight Platform for Spring Boot"
-    version "1.0.3"
+    version "1.0.4"
 
     repositories {
         mavenCentral()
