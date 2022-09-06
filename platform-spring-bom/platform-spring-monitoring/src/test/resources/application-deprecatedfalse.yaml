@@ -1,0 +1,4 @@
+cloudflight:
+  spring:
+    security:
+      use-websecurity-customizer: false

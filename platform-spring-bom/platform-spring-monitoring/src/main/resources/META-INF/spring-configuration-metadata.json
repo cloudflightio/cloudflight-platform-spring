@@ -1,0 +1,21 @@
+{
+  "groups": [
+    {
+      "name": "cloudflight.spring.security",
+      "type": "io.cloudflight.platform.spring.monitoring.autoconfigure.SecurityProperties",
+      "sourceType": "io.cloudflight.platform.spring.monitoring.autoconfigure.SecurityProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "cloudflight.spring.security.use-websecurity-customizer",
+      "type": "java.lang.Boolean",
+      "description": "Set this property to true if you can't upgrade your SpringSecurity code to use SecurityFilterChain",
+      "sourceType": "io.cloudflight.platform.spring.monitoring.autoconfigure.SecurityProperties",
+      "defaultValue": false,
+      "deprecated": true,
+      "deprecation": {}
+    }
+  ],
+  "hints": []
+}
