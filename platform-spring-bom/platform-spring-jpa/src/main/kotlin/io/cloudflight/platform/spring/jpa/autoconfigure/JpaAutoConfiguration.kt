@@ -5,12 +5,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.EnableTransactionManagement
 
-/**
- * @author Harald Radi (harald.radi@cloudflight.io)
- * @version 1.0
- */
 @Configuration
-@EnableTransactionManagement
+@EnableTransactionManagement(order = 2000)
 @EnableConfigurationProperties(TransactionProperties::class)
 class JpaAutoConfiguration {
 

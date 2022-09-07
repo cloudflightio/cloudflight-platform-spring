@@ -27,7 +27,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 @Configuration
 @AutoConfigureBefore(RedisAutoConfiguration::class)
-@EnableCaching
+@EnableCaching(order = 1000)
 @Import(CachingAutoConfiguration.RedisConfiguration::class, CachingAutoConfiguration.RedisSessionConfig::class)
 class CachingAutoConfiguration {
     /**
