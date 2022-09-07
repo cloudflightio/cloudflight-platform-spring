@@ -4,3 +4,6 @@ spring:
   redis:
     host: ${embedded.redis.host}
     port: ${embedded.redis.port}
+  cache:
+    redis:
+      time-to-live: PT5M

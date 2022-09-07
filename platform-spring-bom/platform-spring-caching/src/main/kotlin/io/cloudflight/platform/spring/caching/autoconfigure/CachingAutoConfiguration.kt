@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.cloudflight.platform.spring.caching.serializer.SafeRedisSessionSerializer
 import io.cloudflight.platform.spring.json.ObjectMapperFactory
+import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.AutoConfigureBefore
+import org.springframework.boot.autoconfigure.cache.CacheProperties
+import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
@@ -24,6 +27,7 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer
 import org.springframework.data.redis.serializer.RedisSerializer
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
+import java.time.Duration
 
 @Configuration
 @AutoConfigureBefore(RedisAutoConfiguration::class)
@@ -42,11 +46,37 @@ class CachingAutoConfiguration {
         }
 
         @Bean
-        fun cacheConfiguration(): RedisCacheConfiguration {
-            return RedisCacheConfiguration
-                .defaultCacheConfig().disableCachingNullValues()
+        fun cacheConfiguration(cacheProperties: CacheProperties): RedisCacheConfiguration {
+            var config = RedisCacheConfiguration
+                .defaultCacheConfig()
+                .disableCachingNullValues()
                 .serializeKeysWith(fromSerializer(RedisSerializer.string()))
                 .serializeValuesWith(fromSerializer(JSON))
+            val timeToLive = cacheProperties.redis.timeToLive
+            if (timeToLive == null || timeToLive == Duration.ZERO) {
+                LOG.warn(
+                    "No default time-to-live is set for the Redis cache. This can lead to entries remaining" +
+                            " forever in the cache. Better set spring.cache.redis.time-to-live as a default value for all " +
+                            "caches which you may later override for individual caches."
+                )
+            } else {
+                config = config.entryTtl(timeToLive)
+            }
+            if (cacheProperties.redis.keyPrefix != null) {
+                config = config.prefixCacheNameWith(cacheProperties.redis.keyPrefix)
+            }
+            if (!cacheProperties.redis.isUseKeyPrefix) {
+                config = config.disableKeyPrefix()
+            }
+            return config
+        }
+
+        @Bean
+        fun platformRedisCacheManagerBuilderCustomizer(cacheConfiguration: RedisCacheConfiguration):
+                RedisCacheManagerBuilderCustomizer {
+            return RedisCacheManagerBuilderCustomizer { builder ->
+                builder.transactionAware()
+            }
         }
 
         @Bean
@@ -79,6 +109,7 @@ class CachingAutoConfiguration {
 
     companion object {
         private val JSON = createJsonSerializer()
+        private val LOG = KotlinLogging.logger { }
 
         private fun createJsonSerializer(): GenericJackson2JsonRedisSerializer {
             val objectMapper = ObjectMapperFactory
