@@ -1,4 +1,4 @@
 cloudflight:
   spring:
     security:
-      use-websecurity-customizer: true
+      use-deprecated-websecurity-configurer: true

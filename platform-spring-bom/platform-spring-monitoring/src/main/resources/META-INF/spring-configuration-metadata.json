@@ -8,9 +8,9 @@
   ],
   "properties": [
     {
-      "name": "cloudflight.spring.security.use-websecurity-customizer",
+      "name": "cloudflight.spring.security.use-deprecated-websecurity-configurer",
       "type": "java.lang.Boolean",
-      "description": "Set this property to true if you can't upgrade your SpringSecurity code to use SecurityFilterChain",
+      "description": "Set this property to true if you can't upgrade your SpringSecurity code to get rid of WebSecurityConfigurerAdapter",
       "sourceType": "io.cloudflight.platform.spring.monitoring.autoconfigure.SecurityProperties",
       "defaultValue": false,
       "deprecated": true,
