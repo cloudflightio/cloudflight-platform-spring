@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.transaction.support.AbstractPlatformTransactionManager
 
 @ConstructorBinding
-@ConfigurationProperties("spring.tx")
+@ConfigurationProperties("cloudflight.spring.tx")
 class TransactionProperties(
 
     /**
