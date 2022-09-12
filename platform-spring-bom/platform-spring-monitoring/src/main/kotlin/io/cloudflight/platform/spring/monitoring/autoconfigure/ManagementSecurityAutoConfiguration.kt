@@ -27,7 +27,7 @@ class ManagementSecurityAutoConfiguration {
      */
     @Bean
     @ConditionalOnProperty(
-        value = ["cloudflight.spring.security.use-websecurity-customizer"],
+        value = ["cloudflight.spring.security.use-deprecated-websecurity-configurer"],
         havingValue = "false",
         matchIfMissing = true
     )
@@ -38,11 +38,11 @@ class ManagementSecurityAutoConfiguration {
 
     /**
      * In case the target application still uses the deprecated [org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter]
-     * then this bean can replace the [managementEndpointFilter] by using the old [WebSecurityCustomizer].
+     * then this bean can replace the [managementEndpointFilter] by using a [WebSecurityCustomizer] calling the deprecated [WebSecurity.ignoring] method there.
      */
     @Bean
     @ConditionalOnProperty(
-        value = ["cloudflight.spring.security.use-websecurity-customizer"],
+        value = ["cloudflight.spring.security.use-deprecated-websecurity-configurer"],
         havingValue = "true"
     )
     @Deprecated("migrate your SpringSecurity code and use SecurityFilterChain")
