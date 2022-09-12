@@ -23,17 +23,24 @@ import org.springframework.security.web.SecurityFilterChain
 class ManagementSecurityAutoConfiguration {
 
     /**
-     * Deactivates Spring Security for all management endpoints
+     * Deactivates Spring Security for all management endpoints. The order of this [SecurityFilterChain]
+     * is set to [ORDER], and that should come before your individual [SecurityFilterChain] implementations,
+     * so your order should be higher.
      */
     @Bean
+    @Order(ORDER)
     @ConditionalOnProperty(
         value = ["cloudflight.spring.security.use-deprecated-websecurity-configurer"],
         havingValue = "false",
         matchIfMissing = true
     )
     fun managementEndpointFilter(http: HttpSecurity): SecurityFilterChain {
-        return http.authorizeHttpRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-            .and().build()
+        return http.requestMatcher(EndpointRequest.toAnyEndpoint())
+            .csrf().disable()
+            .cors().disable()
+            .authorizeRequests().anyRequest().permitAll()
+            .and()
+            .build()
     }
 
     /**
@@ -48,6 +55,10 @@ class ManagementSecurityAutoConfiguration {
     @Deprecated("migrate your SpringSecurity code and use SecurityFilterChain")
     fun legacyManagementEndpointFilter(): WebSecurityCustomizer {
         return WebSecurityCustomizer { web -> web.ignoring().requestMatchers(EndpointRequest.toAnyEndpoint()) }
+    }
+
+    companion object {
+        const val ORDER = 50
     }
 }
 
