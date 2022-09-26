@@ -111,14 +111,14 @@ class CachingAutoConfiguration {
         private val JSON = createJsonSerializer()
         private val LOG = KotlinLogging.logger { }
 
-        private fun createJsonSerializer(): GenericJackson2JsonRedisSerializer {
+        internal fun createJsonSerializer(): GenericJackson2JsonRedisSerializer {
             val objectMapper = ObjectMapperFactory
                 .createObjectMapper()
                 .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
 
             objectMapper.activateDefaultTyping(
                 objectMapper.polymorphicTypeValidator,
-                ObjectMapper.DefaultTyping.NON_FINAL,
+                ObjectMapper.DefaultTyping.EVERYTHING,
                 JsonTypeInfo.As.PROPERTY
             )
 
