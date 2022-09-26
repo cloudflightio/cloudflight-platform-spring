@@ -22,7 +22,7 @@ spring-boot = "2.7.3"
 spring-cloud = "2021.0.3"
 
 [libraries]
-archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.2.0" }
+archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.2.1" }
 
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
