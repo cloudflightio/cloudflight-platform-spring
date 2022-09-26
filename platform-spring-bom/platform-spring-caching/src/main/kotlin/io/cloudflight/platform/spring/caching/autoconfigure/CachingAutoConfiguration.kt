@@ -118,7 +118,7 @@ class CachingAutoConfiguration {
 
             objectMapper.activateDefaultTyping(
                 objectMapper.polymorphicTypeValidator,
-                ObjectMapper.DefaultTyping.NON_FINAL,
+                ObjectMapper.DefaultTyping.EVERYTHING,
                 JsonTypeInfo.As.PROPERTY
             )
 
