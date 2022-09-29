@@ -1,8 +1,8 @@
 [versions]
 assertj = "3.23.1"
 
-azure = "4.3.0"
-azure-identity = "1.5.5"
+azure = "4.4.0"
+azure-identity = "1.6.0"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
 guava = "31.1-jre"
@@ -18,8 +18,8 @@ opentelemetry = "1.11.0"
 
 shedlock = "4.41.0"
 
-spring-boot = "2.7.3"
-spring-cloud = "2021.0.3"
+spring-boot = "2.7.4"
+spring-cloud = "2021.0.4"
 
 [libraries]
 archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.2.1" }
@@ -48,7 +48,7 @@ kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.r
 logback-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "6.6" }
 logback-length-splitter = { module = "com.latch:logback-length-splitting-appender", version = "0.4.0" }
 
-mockk = { module = "io.mockk:mockk", version = "1.12.3" }
+mockk = { module = "io.mockk:mockk", version = "1.13.2" }
 
 opentelemetry-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "opentelemetry" }
 
