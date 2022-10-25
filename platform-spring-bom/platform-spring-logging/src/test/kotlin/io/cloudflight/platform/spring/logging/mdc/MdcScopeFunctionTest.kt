@@ -36,6 +36,21 @@ class MdcScopeFunctionTest {
     }
 
     @Test
+    fun `MDC value can be set to 'null'`() = mdcScope {
+        MDC.put(key, null)
+
+        Assertions.assertThat(realMDC.copyOfContextMap.keys).containsExactlyInAnyOrder(key)
+        Assertions.assertThat(realMDC.get(key)).isNull()
+    }
+
+    @Test
+    fun `MDC value is ignored if value is 'null'`() = mdcScope(ignoreNullValues = true) {
+        MDC.put(key, null)
+
+        Assertions.assertThat(realMDC.copyOfContextMap).isEmpty()
+    }
+
+    @Test
     fun `MDC can be removed inside scope`() = mdcScope {
         MDC.put(key to value)
 
