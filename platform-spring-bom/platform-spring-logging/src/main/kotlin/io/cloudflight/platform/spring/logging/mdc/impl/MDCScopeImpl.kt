@@ -3,19 +3,21 @@ package io.cloudflight.platform.spring.logging.mdc.impl
 import io.cloudflight.platform.spring.logging.mdc.MDCAccess
 import io.cloudflight.platform.spring.logging.mdc.MDCScope
 
-private class MDCAccessImpl(private val mdcScope: MDCScopeImpl): MDCAccess by mdcScope
+private class MDCAccessImpl(private val mdcScope: MDCScopeImpl) : MDCAccess by mdcScope
 
-internal class MDCScopeImpl: MDCScope, MDCAccess {
+internal class MDCScopeImpl(private val ignoreNullValues: Boolean) : MDCScope, MDCAccess {
     private val addedMDCEntries = mutableSetOf<String>()
 
     override val MDC: MDCAccess = MDCAccessImpl(this)
 
-    override fun put(key: String, value: String) {
-        addedMDCEntries.add(key)
-        org.slf4j.MDC.put(key, value)
+    override fun put(key: String, value: String?) {
+        if (!(ignoreNullValues && value == null)) {
+            addedMDCEntries.add(key)
+            org.slf4j.MDC.put(key, value)
+        }
     }
 
-    override fun put(entry: Pair<String, String>) {
+    override fun put(entry: Pair<String, String?>) {
         this.put(entry.first, entry.second)
     }
 
