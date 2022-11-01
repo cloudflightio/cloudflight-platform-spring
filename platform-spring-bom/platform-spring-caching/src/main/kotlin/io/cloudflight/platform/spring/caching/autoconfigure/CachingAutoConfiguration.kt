@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.cloudflight.platform.spring.caching.serializer.SafeRedisSessionSerializer
 import io.cloudflight.platform.spring.json.ObjectMapperFactory
 import mu.KotlinLogging
-import org.springframework.boot.autoconfigure.AutoConfigureBefore
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.cache.CacheProperties
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -29,8 +29,7 @@ import org.springframework.data.redis.serializer.RedisSerializer
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
 import java.time.Duration
 
-@Configuration
-@AutoConfigureBefore(RedisAutoConfiguration::class)
+@AutoConfiguration(before = [RedisAutoConfiguration::class])
 @EnableCaching(order = 1000)
 @Import(CachingAutoConfiguration.RedisConfiguration::class, CachingAutoConfiguration.RedisSessionConfig::class)
 class CachingAutoConfiguration {

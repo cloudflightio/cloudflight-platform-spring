@@ -10,11 +10,10 @@ import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationRunner
-import org.springframework.boot.autoconfigure.AutoConfigureAfter
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
 /**
  * AutoConfiguration which adds support for asynchronous messaging via Spring Boot's AMQP support.
@@ -23,8 +22,7 @@ import org.springframework.context.annotation.Configuration
  *
  * @author Klaus Lehner
  */
-@Configuration
-@AutoConfigureAfter(value = [RabbitAutoConfiguration::class])
+@AutoConfiguration(after = [RabbitAutoConfiguration::class])
 class PlatformMessagingAutoConfiguration {
 
     @Autowired(required = false)

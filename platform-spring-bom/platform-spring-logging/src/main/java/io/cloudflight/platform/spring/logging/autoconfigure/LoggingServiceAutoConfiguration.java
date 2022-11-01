@@ -2,9 +2,9 @@ package io.cloudflight.platform.spring.logging.autoconfigure;
 
 import io.cloudflight.platform.spring.logging.interceptor.LogParamInterceptor;
 import io.cloudflight.platform.spring.logging.service.LogFlusher;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Logging Service
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Clemens Grabmann
  */
-@Configuration
+@AutoConfiguration
 public class LoggingServiceAutoConfiguration {
 
     @Bean

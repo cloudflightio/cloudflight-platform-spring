@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.cloudflight.platform.spring.i18n.autoconfigure.PlatformI18nAutoConfiguration,\
-io.cloudflight.platform.spring.i18n.autoconfigure.PlatformI18nWebAutoConfiguration

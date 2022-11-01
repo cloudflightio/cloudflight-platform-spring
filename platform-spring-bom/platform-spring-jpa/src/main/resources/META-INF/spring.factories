@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.cloudflight.platform.spring.jpa.autoconfigure.JpaAutoConfiguration,\
-io.cloudflight.platform.spring.jpa.autoconfigure.QueryDslAutoConfiguration

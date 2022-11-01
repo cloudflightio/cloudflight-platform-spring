@@ -12,11 +12,10 @@ import io.cloudflight.platform.spring.storage.azure.service.AzureStorageService
 import io.cloudflight.platform.spring.storage.azure.service.AzuriteSasTokenStrategy
 import io.cloudflight.platform.spring.storage.azure.service.SasTokenStrategy
 import io.cloudflight.platform.spring.storage.service.StorageService
-import org.springframework.boot.autoconfigure.AutoConfigureBefore
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
 /**
@@ -24,9 +23,8 @@ import org.springframework.context.annotation.Profile
  * when the staging or production profile is active in order to connect to the azure storage using the
  * [DefaultAzureCredentialBuilder] instead of connecting to the local azurite storage.
  */
-@Configuration
+@AutoConfiguration(before = [AzureStorageBlobAutoConfiguration::class])
 @ConditionalOnProperty(value = ["spring.cloud.azure.storage.blob.enabled"], havingValue = "true", matchIfMissing = true)
-@AutoConfigureBefore(AzureStorageBlobAutoConfiguration::class)
 class PlatformAzureStorageBlobAutoConfiguration {
 
     @Bean

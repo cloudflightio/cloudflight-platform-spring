@@ -5,7 +5,7 @@ import io.cloudflight.platform.spring.scheduling.lock.NoopLockProvider
 import net.javacrumbs.shedlock.core.LockProvider
 import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock
-import org.springframework.boot.autoconfigure.AutoConfigureAfter
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
@@ -15,8 +15,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.scheduling.annotation.EnableScheduling
 
-@Configuration
-@AutoConfigureAfter(CachingAutoConfiguration::class, RedisAutoConfiguration::class)
+@AutoConfiguration(after = [CachingAutoConfiguration::class, RedisAutoConfiguration::class])
 @EnableScheduling
 @EnableSchedulerLock(defaultLockAtMostFor = "PT30S")
 @Import(value = [SchedulingAutoConfiguration.NoopConfiguration::class, SchedulingAutoConfiguration.RedisConfiguration::class])
