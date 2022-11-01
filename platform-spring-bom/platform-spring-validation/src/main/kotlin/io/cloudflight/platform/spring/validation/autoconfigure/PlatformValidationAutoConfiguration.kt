@@ -5,12 +5,12 @@ import io.cloudflight.platform.spring.validation.ErrorResponseMapper
 import io.cloudflight.platform.spring.validation.impl.ErrorResponseFactoryImpl
 import io.cloudflight.platform.spring.validation.impl.ErrorResponseMapperImpl
 import io.cloudflight.platform.spring.validation.impl.ValidationExceptionAdvice
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
-@Configuration
+@AutoConfiguration
 class PlatformValidationAutoConfiguration {
 
     @Bean
