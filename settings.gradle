@@ -1,3 +1,7 @@
+plugins {
+    id "io.cloudflight.autoconfigure-settings" version "0.8.4"
+}
+
 rootProject.name = 'cloudflight-platform-spring'
 
 include 'platform-spring-bom'
