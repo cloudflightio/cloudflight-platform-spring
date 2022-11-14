@@ -48,7 +48,7 @@ kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.r
 logback-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "6.6" }
 logback-length-splitter = { module = "com.latch:logback-length-splitting-appender", version = "0.4.0" }
 
-mockk = { module = "io.mockk:mockk", version = "1.13.2" }
+mockk = { module = "io.mockk:mockk-jvm", version = "1.13.2" }
 
 opentelemetry-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "opentelemetry" }
 
