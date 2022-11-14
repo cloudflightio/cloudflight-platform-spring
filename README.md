@@ -103,7 +103,7 @@ the module `platform-server-config` comes with a utility which prints a detaille
 
 To enable that, you need to do two things:
 
-1. Set the logger `io.cloudflight.platform.server.ApplicationStartupPrinter` to `TRACE`
+1. Set the logger `io.cloudflight.platform.spring.server.ApplicationStartupPrinter` to `TRACE`
 2. Set a `BufferingApplicationStartup` to your `SpringBootApplication` as described in the [official docs](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-application-startup-tracking).
 
 ````java
