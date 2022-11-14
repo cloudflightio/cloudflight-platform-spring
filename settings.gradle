@@ -1,5 +1,5 @@
 plugins {
-    id "io.cloudflight.autoconfigure-settings" version "0.8.4"
+    id "io.cloudflight.autoconfigure-settings" version "0.8.7"
 }
 
 rootProject.name = 'cloudflight-platform-spring'
