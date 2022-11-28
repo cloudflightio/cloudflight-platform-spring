@@ -1,10 +1,8 @@
 package io.cloudflight.platform.spring.jpa.autoconfigure
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.transaction.support.AbstractPlatformTransactionManager
 
-@ConstructorBinding
 @ConfigurationProperties("cloudflight.spring.tx")
 class TransactionProperties(
 

@@ -12,7 +12,7 @@ class TestSerialVersionId {
     @Test
     fun ensureSpringSecurityCoreVersion() {
         Assertions.assertEquals(
-            570L,
+            600L,
             SpringSecurityCoreVersion.SERIAL_VERSION_UID,
             "if that version changes, then http sessions aren't deserializable anymore. add a note to the " +
                     "changelog and increase the version number accordingly to signal a breaking change."

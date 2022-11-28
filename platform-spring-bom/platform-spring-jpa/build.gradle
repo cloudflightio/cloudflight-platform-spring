@@ -18,7 +18,7 @@ dependencies {
     // Spring Data JPA requires the Kotlin-Reflect classes at runtime
     runtimeOnly('org.jetbrains.kotlin:kotlin-reflect')
 
-    compileOnly('com.querydsl:querydsl-jpa')
+    compileOnly('com.querydsl:querydsl-jpa::jakarta')
 
     kapt 'org.springframework.boot:spring-boot-configuration-processor'
 }
