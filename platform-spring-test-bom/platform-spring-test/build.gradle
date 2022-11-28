@@ -9,7 +9,6 @@ dependencies {
 
     api 'org.quickperf:quick-perf-junit5'
 
-
     testImplementation 'io.swagger:swagger-annotations'
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
 }

@@ -1,14 +1,14 @@
 package io.cloudflight.platform.spring.tracing.filter
 
 import io.cloudflight.platform.spring.logging.mdc.mdcScope
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerMapping
-import javax.servlet.FilterChain
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class RequestLoggingFilter(private val dataProvider: Collection<RequestLoggingDataProvider>) : OncePerRequestFilter() {
 

@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.env.EnvironmentPostProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.core.Ordered
@@ -15,7 +14,6 @@ import org.springframework.core.env.MapPropertySource
 import org.springframework.core.env.Profiles
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.web.SecurityFilterChain
 
 @AutoConfiguration
@@ -29,32 +27,13 @@ class ManagementSecurityAutoConfiguration {
      */
     @Bean
     @Order(ORDER)
-    @ConditionalOnProperty(
-        value = ["cloudflight.spring.security.use-deprecated-websecurity-configurer"],
-        havingValue = "false",
-        matchIfMissing = true
-    )
     fun managementEndpointFilter(http: HttpSecurity): SecurityFilterChain {
-        return http.requestMatcher(EndpointRequest.toAnyEndpoint())
+        return http.securityMatcher(EndpointRequest.toAnyEndpoint())
             .csrf().disable()
             .cors().disable()
-            .authorizeRequests().anyRequest().permitAll()
+            .authorizeHttpRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
             .and()
             .build()
-    }
-
-    /**
-     * In case the target application still uses the deprecated [org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter]
-     * then this bean can replace the [managementEndpointFilter] by using a [WebSecurityCustomizer] calling the deprecated [WebSecurity.ignoring] method there.
-     */
-    @Bean
-    @ConditionalOnProperty(
-        value = ["cloudflight.spring.security.use-deprecated-websecurity-configurer"],
-        havingValue = "true"
-    )
-    @Deprecated("migrate your SpringSecurity code and use SecurityFilterChain")
-    fun legacyManagementEndpointFilter(): WebSecurityCustomizer {
-        return WebSecurityCustomizer { web -> web.ignoring().requestMatchers(EndpointRequest.toAnyEndpoint()) }
     }
 
     companion object {

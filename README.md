@@ -290,7 +290,7 @@ If you are using Kotlin entities (which is our preferred way), then your `build.
 ````groovy
 dependencies {
     implementation 'io.cloudflight.platform.spring:platform-spring-jpa'
-    implementation 'com.querydsl:querydsl-jpa'
+    implementation 'com.querydsl:querydsl-jpa::jakarta'
 
     kapt 'com.querydsl:querydsl-apt::jpa'
     kapt 'io.cloudflight.platform.spring:platform-spring-jpa'
