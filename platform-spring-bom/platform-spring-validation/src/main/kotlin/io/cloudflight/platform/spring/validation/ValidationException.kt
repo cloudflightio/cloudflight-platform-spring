@@ -1,6 +1,5 @@
 package io.cloudflight.platform.spring.validation
 
-import io.cloudflight.platform.spring.validation.impl.ValidationExceptionAdvice
 import org.springframework.validation.BeanPropertyBindingResult
 import org.springframework.validation.BindException
 import org.springframework.validation.BindingResult
