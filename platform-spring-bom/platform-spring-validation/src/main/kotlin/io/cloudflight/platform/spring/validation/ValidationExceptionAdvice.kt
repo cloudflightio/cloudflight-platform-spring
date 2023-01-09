@@ -1,8 +1,5 @@
-package io.cloudflight.platform.spring.validation.impl
+package io.cloudflight.platform.spring.validation
 
-import io.cloudflight.platform.spring.validation.ErrorResponseMapper
-import io.cloudflight.platform.spring.validation.ValidationConstants
-import io.cloudflight.platform.spring.validation.ValidationException
 import io.cloudflight.platform.spring.validation.api.dto.ErrorResponse
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @ControllerAdvice(annotations = [RestController::class])
 @Order(ValidationConstants.VALIDATION_ADVICE_ORDER)
-internal class ValidationExceptionAdvice(
+class ValidationExceptionAdvice(
     private val errorResponseMapper: ErrorResponseMapper
 ) {
 
