@@ -18,7 +18,7 @@ opentelemetry = "1.20.1"
 
 shedlock = "4.42.0"
 
-spring-boot = "2.7.6"
+spring-boot = "2.7.7"
 spring-cloud = "2021.0.5"
 
 [libraries]
