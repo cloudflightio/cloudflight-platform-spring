@@ -1,8 +1,12 @@
 plugins {
-    id "io.cloudflight.autoconfigure-settings" version "0.8.7"
+    id "io.cloudflight.autoconfigure-settings" version "0.8.11"
 }
 
 rootProject.name = 'cloudflight-platform-spring'
+
+reckon {
+    scopeCalc = calcScopeFromCommitMessages()
+}
 
 include 'platform-spring-bom'
 include 'platform-spring-bom:platform-spring-caching'

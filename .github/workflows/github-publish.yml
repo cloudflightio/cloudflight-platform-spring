@@ -3,15 +3,14 @@ name: Publish to Maven Central
 on:
   workflow_dispatch:
     inputs:
-      scope:
-        description: 'the scope of the version'
+      stage:
+        description: 'the stage of the version'
         required: true
-        default: 'patch'
+        default: 'rc'
         type: choice
         options:
-          - patch
-          - minor
-          - major
+          - rc
+          - final
 
 jobs:
   publish:
@@ -37,7 +36,7 @@ jobs:
       - name: Publish and Create Tag
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: check reckonTagPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Preckon.stage=final -Preckon.scope=${{ inputs.scope }}
+          arguments: check reckonTagPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Preckon.stage=${{ inputs.stage }
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
