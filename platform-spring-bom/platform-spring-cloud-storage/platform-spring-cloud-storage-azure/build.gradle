@@ -1,3 +1,7 @@
+plugins{
+    id("io.micronaut.test-resources")
+}
+
 dependencies {
     api project(":platform-spring-bom:platform-spring-cloud-storage:platform-spring-cloud-storage-api")
     implementation project(":platform-spring-bom:platform-spring-context")
@@ -12,7 +16,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation project(":platform-spring-test-bom:platform-spring-test-testcontainers")
     testImplementation project(":platform-spring-bom:platform-spring-json")
-    testImplementation 'com.playtika.testcontainers:embedded-azurite'
     testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 
+    testResourcesImplementation libs.testresources.azurite
 }

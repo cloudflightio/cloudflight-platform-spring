@@ -4,6 +4,5 @@ spring:
       storage:
         blob:
           enabled: true
-          account-name: ${embedded.azurite.account-name}
-          account-key: ${embedded.azurite.account-key}
-          endpoint: ${embedded.azurite.blob-endpoint}
+      compatibility-verifier:
+        enabled: false  # TODO remove as soon as the ms-azurite library is final in version 6.0.0, see https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping
