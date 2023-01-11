@@ -21,6 +21,8 @@ shedlock = "4.42.0"
 spring-boot = "3.0.1"
 spring-cloud = "2022.0.0"
 
+springboot-testresources = "0.1.2"
+
 [libraries]
 archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.3.0" }
 
@@ -64,6 +66,10 @@ springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.
 swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.2" }
 swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.1.10" }
 
-testcontainers-playtika-bom = { module = "com.playtika.testcontainers:testcontainers-spring-boot-bom", version = "2.2.14" }
 testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "2.9.2.Final" }
 
+testresources-client = { module = "io.cloudflight.testresources.springboot:springboot-testresources-client", version.ref = "springboot-testresources" }
+
+testresources-azurite = { module = "io.cloudflight.testresources.springboot:springboot-testresources-azurite", version.ref = "springboot-testresources" }
+testresources-rabbitmq = { module = "io.cloudflight.testresources.springboot:springboot-testresources-rabbitmq", version.ref = "springboot-testresources" }
+testresources-redis = { module = "io.cloudflight.testresources.springboot:springboot-testresources-redis", version.ref = "springboot-testresources" }

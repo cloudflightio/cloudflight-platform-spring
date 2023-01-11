@@ -1,3 +1,7 @@
+plugins{
+    id("io.micronaut.test-resources")
+}
+
 dependencies {
     implementation project(':platform-spring-bom:platform-spring-json')
     implementation project(':platform-spring-bom:platform-spring-logging')
@@ -16,5 +20,6 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'com.playtika.testcontainers:embedded-redis'
+
+    testResourcesImplementation libs.testresources.redis
 }

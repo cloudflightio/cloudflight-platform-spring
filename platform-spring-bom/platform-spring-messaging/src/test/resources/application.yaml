@@ -6,7 +6,3 @@ spring:
         concurrency: 1
         prefetch: 1
         auto-startup: false
-    port: ${embedded.rabbitmq.port}
-    host: ${embedded.rabbitmq.host}
-    username: ${embedded.rabbitmq.user}
-    password: ${embedded.rabbitmq.password}
