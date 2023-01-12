@@ -28,7 +28,7 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name : Retrieve module version from Reckon
-        run: echo "VERSION_NAME=$(${{github.workspace}}/gradlew -q clfPrintVersion -Preckon.stage=final -Preckon.scope=${{ inputs.scope }})" >> $GITHUB_OUTPUT
+        run: echo "VERSION_NAME=$(${{github.workspace}}/gradlew -q clfPrintVersion -Preckon.stage=${{ inputs.stage }})" >> $GITHUB_OUTPUT
         id: retrieve_version
       - name: Publish module version to Github Step Summary
         run: |
@@ -36,7 +36,7 @@ jobs:
       - name: Publish and Create Tag
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: check reckonTagPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Preckon.stage=${{ inputs.stage }
+          arguments: check reckonTagPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Preckon.stage=${{ inputs.stage }}
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
