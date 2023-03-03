@@ -32,7 +32,7 @@ allprojects { p ->
         }
     }
 
-    if (p.plugins.hasPlugin(JavaLibraryPlugin) || p.name.endsWith("-bom")) {
+    if (p.subprojects.isEmpty() || p.name.endsWith("-bom")) {
         apply plugin: 'maven-publish'
         apply plugin: 'signing'
 
