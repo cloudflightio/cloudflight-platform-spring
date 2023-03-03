@@ -2,8 +2,8 @@ package io.cloudflight.platform.spring.storage.azure.autoconfigure
 
 import com.azure.core.credential.TokenCredential
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobAutoConfiguration
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties
-import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import io.cloudflight.platform.spring.context.ApplicationContextProfiles
