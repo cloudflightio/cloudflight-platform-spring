@@ -22,4 +22,5 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
 
     testResourcesImplementation libs.testresources.redis
+    testResourcesImplementation libs.testcontainers.junit4.mock
 }
