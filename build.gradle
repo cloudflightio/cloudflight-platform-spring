@@ -19,6 +19,13 @@ allprojects { p ->
         mavenCentral()
     }
 
+    configurations {
+        all {
+            exclude group: 'junit'
+            exclude group: 'org.junit.vintage'
+        }
+    }
+
     if (p.plugins.hasPlugin(JavaLibraryPlugin)) {
         java {
             withJavadocJar()
