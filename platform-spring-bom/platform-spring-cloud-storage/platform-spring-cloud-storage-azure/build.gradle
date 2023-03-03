@@ -19,5 +19,4 @@ dependencies {
     testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 
     testResourcesImplementation libs.testresources.azurite
-    testResourcesImplementation libs.testcontainers.junit4.mock
 }
