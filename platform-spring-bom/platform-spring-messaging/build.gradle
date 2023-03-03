@@ -22,5 +22,4 @@ dependencies {
     testImplementation project(':platform-spring-test-bom:platform-spring-test-testcontainers')
 
     testResourcesImplementation libs.testresources.rabbitmq
-    testResourcesImplementation libs.testcontainers.junit4.mock
 }

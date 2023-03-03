@@ -1,4 +1,3 @@
 dependencies {
     runtimeOnly(libs.testresources.client)
-    runtimeOnly(libs.testcontainers.junit4.mock)
 }
