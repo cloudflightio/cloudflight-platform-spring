@@ -21,7 +21,7 @@ shedlock = "4.42.0"
 spring-boot = "3.0.6"
 spring-cloud = "2022.0.2"
 
-springboot-testresources = "0.2.0"
+springboot-testresources = "0.2.1"
 
 [libraries]
 archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.4.0" }
