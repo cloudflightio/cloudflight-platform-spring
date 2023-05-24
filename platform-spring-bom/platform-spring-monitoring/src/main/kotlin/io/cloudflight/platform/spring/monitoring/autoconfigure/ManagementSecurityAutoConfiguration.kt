@@ -78,18 +78,24 @@ class ManagementServerPortEnvironmentPostProcessor : EnvironmentPostProcessor {
         ) {
             // we do not change the port for the management services in test cases and container tests to not get any conflicts
             // with concurrent builds
-            (environment.getProperty("server.port") ?: SPRING_DEFAULT_PORT).let { serverPort ->
-                environment.propertySources.addFirst(
-                    MapPropertySource(
-                        "cloudflight-management",
-                        mapOf("management.server.port" to serverPort.toInt() + 10000)
+            (environment.getProperty(SERVER_PORT_NAME) ?: SPRING_DEFAULT_PORT).let { serverPort ->
+                if (environment.getProperty(MANAGEMENT_SERVER_PORT_NAME).isNullOrBlank()) {
+                    // only change unless already set
+                    environment.propertySources.addFirst(
+                        MapPropertySource(
+                            "cloudflight-management",
+                            mapOf(MANAGEMENT_SERVER_PORT_NAME to serverPort.toInt() + 10000)
+                        )
                     )
-                )
+                }
             }
         }
     }
 
     companion object {
         const val SPRING_DEFAULT_PORT = "8080"
+
+        const val SERVER_PORT_NAME = "server.port"
+        const val MANAGEMENT_SERVER_PORT_NAME = "management.server.port"
     }
 }
