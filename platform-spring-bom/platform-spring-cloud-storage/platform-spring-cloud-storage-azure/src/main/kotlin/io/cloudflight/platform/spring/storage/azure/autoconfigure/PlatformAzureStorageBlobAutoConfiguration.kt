@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
 
 /**
- * Provides a different [BlobServiceClientBuilder] than the one defined in [StorageAutoConfiguration]
+ * Provides a different [BlobServiceClientBuilder] than the one defined in [AzureStorageBlobAutoConfiguration]
  * when the staging or production profile is active in order to connect to the azure storage using the
  * [DefaultAzureCredentialBuilder] instead of connecting to the local azurite storage.
  */

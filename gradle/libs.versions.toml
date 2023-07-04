@@ -1,7 +1,7 @@
 [versions]
 assertj = "3.23.1"
 
-azure = "5.0.0"
+azure = "5.3.0"
 azure-identity = "1.8.0"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
