@@ -1,11 +1,14 @@
 package io.cloudflight.platform.spring.storage.azure.autoconfigure
 
+import com.azure.core.credential.AzureNamedKeyCredential
 import com.azure.core.credential.TokenCredential
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobAutoConfiguration
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import io.cloudflight.platform.spring.autoconfigure.azurite.AzuriteConnectionDetails
 import io.cloudflight.platform.spring.context.ApplicationContextProfiles
 import io.cloudflight.platform.spring.storage.azure.service.AzureSasTokenStrategy
 import io.cloudflight.platform.spring.storage.azure.service.AzureStorageService
@@ -13,6 +16,7 @@ import io.cloudflight.platform.spring.storage.azure.service.AzuriteSasTokenStrat
 import io.cloudflight.platform.spring.storage.azure.service.SasTokenStrategy
 import io.cloudflight.platform.spring.storage.service.StorageService
 import org.springframework.boot.autoconfigure.AutoConfiguration
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -27,7 +31,7 @@ import org.springframework.context.annotation.Profile
 @ConditionalOnProperty(value = ["spring.cloud.azure.storage.blob.enabled"], havingValue = "true", matchIfMissing = true)
 class PlatformAzureStorageBlobAutoConfiguration {
 
-    @Bean
+    @Bean(name = [STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME])
     @Profile(ApplicationContextProfiles.PRODUCTION, ApplicationContextProfiles.STAGING)
     fun blobServiceClientBuilder(
         storageProperties: AzureStorageBlobProperties,
@@ -36,6 +40,14 @@ class PlatformAzureStorageBlobAutoConfiguration {
         return BlobServiceClientBuilder()
             .endpoint(storageProperties.endpoint)
             .credential(tokenCredential)
+    }
+
+    @Bean(name = [STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME])
+    @ConditionalOnBean(value = [AzuriteConnectionDetails::class])
+    fun azuriteBlobServiceClientBuilder(connectionDetails: AzuriteConnectionDetails): BlobServiceClientBuilder {
+        return BlobServiceClientBuilder()
+            .endpoint(connectionDetails.accountEndpoint)
+            .credential(AzureNamedKeyCredential(connectionDetails.accountName, connectionDetails.accountKey))
     }
 
     @Bean
