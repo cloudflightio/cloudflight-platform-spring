@@ -7,15 +7,26 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.ApplicationContext
+import org.testcontainers.containers.RabbitMQContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.Duration
 
 @SpringBootTest(classes = [MessagingTestApplication::class])
+@Testcontainers
 class MessagingContainerTest(
-        @Autowired private val applicationContext: ApplicationContext,
-        @Autowired private val transactionalService: TransactionalService,
-        @Autowired private val myListener: MyListener
+    @Autowired private val applicationContext: ApplicationContext,
+    @Autowired private val transactionalService: TransactionalService,
+    @Autowired private val myListener: MyListener
 ) {
+
+    companion object {
+        @ServiceConnection
+        @Container
+        val rabbit: RabbitMQContainer = RabbitMQContainer()
+    }
 
     @BeforeEach
     fun resetListener() {

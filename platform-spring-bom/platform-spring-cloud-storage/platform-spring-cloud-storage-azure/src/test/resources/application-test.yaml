@@ -6,3 +6,5 @@ spring:
           enabled: true
       compatibility-verifier:
         enabled: false  # TODO remove as soon as the ms-azurite library is final in version 6.0.0, see https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping
+  main:
+    allow-bean-definition-overriding: true

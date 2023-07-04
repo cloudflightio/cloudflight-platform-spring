@@ -6,10 +6,12 @@ import io.cloudflight.platform.spring.context.ApplicationContextProfiles.TEST
 import io.cloudflight.platform.spring.json.ObjectMapperFactory
 import io.cloudflight.platform.spring.storage.dto.ObjectProperties
 import io.cloudflight.platform.spring.storage.dto.StorageRequest
+import io.cloudflight.platform.spring.test.testcontainers.azurite.AzuriteContainer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
@@ -18,6 +20,8 @@ import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.put
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -28,10 +32,17 @@ import kotlin.io.path.deleteIfExists
 
 @ActiveProfiles(value = [TEST])
 @SpringBootTest
+@Testcontainers
 class ApplicationTest(
     @Autowired private val wac: WebApplicationContext,
     @Autowired private val objectMapper: ObjectMapper
 ) {
+
+    companion object {
+        @ServiceConnection
+        @Container
+        val azurite = AzuriteContainer()
+    }
 
     private val mockMvc = MockMvcBuilders.webAppContextSetup(wac).build()
 
