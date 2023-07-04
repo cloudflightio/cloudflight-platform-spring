@@ -2,5 +2,5 @@ dependencies {
     implementation project(":platform-spring-bom:platform-spring-context")
     api("org.testcontainers:junit-jupiter")
     api("org.springframework.boot:spring-boot-testcontainers")
-    implementation(libs.testcontainers.junit4.mock)
+    api(libs.testcontainers.junit4.mock)
 }
