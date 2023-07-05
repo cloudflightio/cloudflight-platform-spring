@@ -506,8 +506,6 @@ class HelloWorldController : HelloWorldApi {                                    
 5. Any API from your -api-module
 6. The server implementation of your API
 
-
-
 #### QuickPerf
 
 Additionally, the module `platform-spring-test` comes with the great library [QuickPerf](https://github.com/quick-perf/doc/wiki/QuickPerf).
@@ -536,45 +534,38 @@ for all available annotations including configuration support.
 ### Test-Support for Testcontainers
 
 Embed the module `platform-spring-test-testcontainers` to get support for [Testcontainers](https://testcontainers.org) via
-the [wrapper library from playtika](https://github.com/Playtika/testcontainers-spring-boot).
+the [the embedded Support of Spring Boot 3.1](https://spring.io/blog/2023/06/23/improved-testcontainers-support-in-spring-boot-3-1).
 
-
-The playtika library provides wrappers for lots of containers (MariaDB, Postgres, RabbitMQ, Localstack, MinIO,...) which
-you have to add yourself in your Gradle scripts as shown below. You just don't need to care about versioning, that is being
-done by the platform, as the BOM of Playtika is being embedded. The list of available wrapper libraries can be
-found [here](https://github.com/Playtika/testcontainers-spring-boot#supported-services).
+You might also have a look at the [latest documentation from Spring Boot on Testcontainers Support](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.testing.testcontainers).
 
 #### MariaDB via Testcontainers
 
 Here is an example how to use the MariaDB testcontainer within your `@SpringBootTest`. First, add the dependency to
-`platform-spring-test-testcontainers` along with `embedded-mariadb`:
+`platform-spring-test-testcontainers` along with `org.testcontainers:mariadb`:
 
 ````groovy
 dependencies {
-    testImplementation 'io.cloudflight.platform.spring:platform-spring-test-testcontainers'
-    testImplementation 'com.playtika.testcontainers:embedded-mariadb'
+    testImplementation("io.cloudflight.platform.spring:platform-spring-test-testcontainers")
+    testImplementation("org.testcontainers:mariadb")
 }
 ````
 
-Then configure your Spring DataSource with the exposed properties in your `application-test.yaml`:
-
-````yaml
-spring:
-  datasource:
-    url: jdbc:mariadb://${embedded.mariadb.host}:${embedded.mariadb.port}/${embedded.mariadb.schema}
-    username: ${embedded.mariadb.user}
-    password: ${embedded.mariadb.password}
-
-````
 
 Your test case then is as easy as to just use the test profile and start a `@SpringBootTest`:
 
 ````kotlin
 @SpringBootTest
 @ActiveProfiles(ApplicationContextProfiles.TEST)
+@Testcontainers
 class ServerIntegrationTest(
 @Autowired private val personService: PersonService
 ) {
+
+    companion object {
+        @Container
+        @ServiceConnection
+        val mariaDb = MariaDBContainer("mariadb:10.3.6")
+    }
 
     @Test
     fun listPersons() {
