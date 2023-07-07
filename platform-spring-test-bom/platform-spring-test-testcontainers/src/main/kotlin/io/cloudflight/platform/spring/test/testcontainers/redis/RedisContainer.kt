@@ -13,7 +13,7 @@ class RedisContainer(dockerImageName: DockerImageName) : GenericContainer<RedisC
     }
 
     companion object {
-        private val DEFAULT_IMAGE_NAME = "redis"
+        private const val DEFAULT_IMAGE_NAME = "redis"
 
         private const val DEFAULT_TAG = "7.0.11"
 

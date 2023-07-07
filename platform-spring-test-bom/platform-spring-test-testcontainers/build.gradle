@@ -3,4 +3,7 @@ dependencies {
     api("org.testcontainers:junit-jupiter")
     api("org.springframework.boot:spring-boot-testcontainers")
     api(libs.testcontainers.junit4.mock)
+
+    testImplementation("org.springframework.boot:spring-boot-starter-data-redis")
+
 }
