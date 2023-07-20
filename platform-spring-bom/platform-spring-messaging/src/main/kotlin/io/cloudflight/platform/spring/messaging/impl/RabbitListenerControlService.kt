@@ -18,10 +18,10 @@ internal class RabbitListenerControlService(
     override fun run(args: ApplicationArguments?) {
         registry.listenerContainers.stream()
                 .map { c -> c as AbstractMessageListenerContainer }
-                .forEach { c -> c.setTaskExecutor(SimpleAsyncTaskExecutor(c.listenerId!! + "-")) }
+                .forEach { c -> c.setTaskExecutor(SimpleAsyncTaskExecutor(c.listenerId + "-")) }
 
         for (listenerContainer in registry.listenerContainers.map { c -> c as AbstractMessageListenerContainer }) {
-            if (processControlRegistry == null || processControlRegistry.actionEnabled(ACTION_PREFIX + listenerContainer.listenerId!!)) {
+            if (processControlRegistry == null || processControlRegistry.actionEnabled(ACTION_PREFIX + listenerContainer.listenerId)) {
                 listenerContainer.start()
             } else {
                 LOG.warn("Do not start ${listenerContainer.listenerId} as processing action is disabled")
