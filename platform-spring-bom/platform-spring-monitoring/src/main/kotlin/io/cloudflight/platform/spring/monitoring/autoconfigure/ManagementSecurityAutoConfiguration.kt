@@ -14,6 +14,7 @@ import org.springframework.core.env.MapPropertySource
 import org.springframework.core.env.Profiles
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
+import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.web.SecurityFilterChain
 
 @AutoConfiguration
@@ -28,12 +29,22 @@ class ManagementSecurityAutoConfiguration {
     @Bean
     @Order(ORDER)
     fun managementEndpointFilter(http: HttpSecurity): SecurityFilterChain {
-        return http.securityMatcher(EndpointRequest.toAnyEndpoint())
-            .csrf().disable()
-            .cors().disable()
-            .authorizeHttpRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-            .and()
-            .build()
+        http {
+            securityMatcher(EndpointRequest.toAnyEndpoint())
+
+            csrf {
+                disable()
+            }
+
+            cors {
+                disable()
+            }
+
+            authorizeRequests {
+                authorize(EndpointRequest.toAnyEndpoint(), permitAll)
+            }
+        }
+        return http.build()
     }
 
     companion object {
