@@ -36,8 +36,7 @@ public class LogParamInterceptor {
             + "execution(public * *..*(.., @io.cloudflight.platform.spring.logging.annotation.LogParam (*), ..))")
     public Object addLogParam(final ProceedingJoinPoint joinPoint) throws Throwable {
         Set<String> mdcKeys = new HashSet<>();
-        if (joinPoint.getSignature() instanceof MethodSignature) {
-            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        if (joinPoint.getSignature() instanceof MethodSignature methodSignature) {
             Method method = methodSignature.getMethod();
             Parameter[] params = method.getParameters();
             Object[] args = joinPoint.getArgs();
