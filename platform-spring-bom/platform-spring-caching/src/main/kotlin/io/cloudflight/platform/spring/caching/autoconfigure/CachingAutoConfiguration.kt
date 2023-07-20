@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCust
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-import org.springframework.cache.annotation.CachingConfigurerSupport
+import org.springframework.cache.annotation.CachingConfigurer
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.cache.interceptor.CacheErrorHandler
 import org.springframework.context.annotation.Bean
@@ -38,7 +38,7 @@ class CachingAutoConfiguration {
      */
     @Configuration
     @ConditionalOnClass(RedisOperations::class)
-    class RedisConfiguration : CachingConfigurerSupport() {
+    class RedisConfiguration : CachingConfigurer {
         @Bean
         override fun errorHandler(): CacheErrorHandler {
             return io.cloudflight.platform.spring.caching.RedisCacheErrorHandler()
