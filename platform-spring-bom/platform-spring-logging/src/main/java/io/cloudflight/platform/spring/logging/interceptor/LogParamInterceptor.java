@@ -9,7 +9,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.MDC;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -60,7 +60,7 @@ public class LogParamInterceptor {
     }
 
     private Collection<String> processParameter(final Parameter param, String parameterName, final Object arg) {
-        Collection<LogParam> logParams = AnnotationUtils.getRepeatableAnnotations(param, LogParam.class);
+        Collection<LogParam> logParams = AnnotatedElementUtils.getMergedRepeatableAnnotations(param, LogParam.class);
         Collection<String> mdcKeys = new ArrayList<>(logParams.size());
         for (LogParam logParam : logParams) {
             String name;
