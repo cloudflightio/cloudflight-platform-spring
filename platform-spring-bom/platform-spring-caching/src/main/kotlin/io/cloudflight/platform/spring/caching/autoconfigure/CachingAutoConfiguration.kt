@@ -83,7 +83,7 @@ class CachingAutoConfiguration {
         fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<Any, Any> {
             return RedisTemplate<Any, Any>().apply {
                 setConnectionFactory(connectionFactory)
-                setDefaultSerializer(JSON)
+                defaultSerializer = JSON
 
                 keySerializer = RedisSerializer.string()
                 hashKeySerializer = RedisSerializer.string()
