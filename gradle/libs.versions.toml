@@ -1,24 +1,24 @@
 [versions]
-assertj = "3.23.1"
+assertj = "3.24.2"
 
 azure = "5.3.0"
-azure-identity = "1.8.0"
+azure-identity = "1.9.2"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
-guava = "31.1-jre"
+guava = "32.1.1-jre"
 
-jgiven = "1.2.2"
-jupiter = "5.9.1"
+jgiven = "1.2.5"
+jupiter = "5.9.3"
 
-kotlin-logging = "2.1.23"
+kotlin-logging = "3.0.5"
 
-logstash = "6.6"
+logstash = "7.4"
 
-opentelemetry = "1.20.1"
+opentelemetry = "1.28.0"
 
-shedlock = "4.42.0"
+shedlock = "5.5.0"
 
-spring-boot = "3.1.1"
+spring-boot = "3.1.2"
 spring-cloud = "2022.0.3"
 
 [libraries]
@@ -31,12 +31,12 @@ awaitility = { module = "org.awaitility:awaitility", version = "4.2.0" }
 azure-dependencies-bom = { module = "com.azure.spring:spring-cloud-azure-dependencies", version.ref = "azure" }
 azure-identity = { module = "com.azure:azure-identity", version.ref = "azure-identity" }
 
-jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.1" }
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.6" }
 
 jgiven-html5-report = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
 jgiven-junit5 = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
 jgiven-spring-junit5 = { module = "com.tngtech.jgiven:jgiven-spring-junit5", version.ref = "jgiven" }
-jgiven-kotlin = { module = "io.toolisticon.testing:jgiven-kotlin", version = "1.0.1" }
+jgiven-kotlin = { module = "io.toolisticon.testing:jgiven-kotlin", version = "1.2.5.0" }
 
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
@@ -45,10 +45,10 @@ junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref 
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 
-logback-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "6.6" }
+logback-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash" }
 logback-length-splitter = { module = "com.latch:logback-length-splitting-appender", version = "0.4.0" }
 
-mockk = { module = "io.mockk:mockk-jvm", version = "1.13.2" }
+mockk = { module = "io.mockk:mockk-jvm", version = "1.13.5" }
 
 opentelemetry-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "opentelemetry" }
 
@@ -61,7 +61,7 @@ spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies"
 spring-cloud-bom = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 
 springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.0.0" }
-swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.2" }
-swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.1.10" }
+swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.11" }
+swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.15" }
 
-testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "2.9.2.Final" }
+testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.2.1.Final" }
