@@ -336,7 +336,14 @@ TBD
 
 ### Scheduling
 
-TBD
+The module `platform-spring-scheduling` integrates [Shedlock](https://github.com/lukas-krecan/ShedLock) with Spring-Boot by
+adding `net.javacrumbs.shedlock:shedlock-provider-redis-spring` to the classpath for distributed locking using Redis.
+
+That means, if you have `platform-spring-scheduling` on the classpath, you can automatically use `@Scheduled` annotations
+along with the `@SchedulerLock` annotation from Shedlock.
+
+Additionally, if no `RedisConnection` bean is available, the module automatically creates a `io.cloudflight.platform.spring.scheduling.lock.NoopLockProvider` for you.
+This way, you can use `@SchedulerLock` also in your tests without the need to have a Redis instance running.
 
 ### Internationalization (I18n)
 

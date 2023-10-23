@@ -7,4 +7,9 @@ dependencies {
     api('org.springframework:spring-context')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    testImplementation project(':platform-spring-test-bom:platform-spring-test-testcontainers')
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+
 }
