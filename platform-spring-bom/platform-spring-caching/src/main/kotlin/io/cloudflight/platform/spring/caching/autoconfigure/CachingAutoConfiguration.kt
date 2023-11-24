@@ -101,8 +101,8 @@ class CachingAutoConfiguration {
     @EnableRedisHttpSession
     class RedisSessionConfig {
         @Bean
-        fun springSessionDefaultRedisSerializer() {
-            SafeRedisSessionSerializer(RedisSerializer.java())
+        fun springSessionDefaultRedisSerializer(): RedisSerializer<*> {
+            return SafeRedisSessionSerializer(RedisSerializer.java())
         }
     }
 
