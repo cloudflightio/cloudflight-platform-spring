@@ -9,9 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.web.DefaultSecurityFilterChain
-import org.springframework.test.context.ActiveProfiles
 
-@ActiveProfiles("deprecatedfalse")
 @SpringBootTest(classes = [ManagementSecurityIntegrationSpringSecurityTest.TestApplication::class])
 class ManagementSecurityIntegrationSpringSecurityTest {
 

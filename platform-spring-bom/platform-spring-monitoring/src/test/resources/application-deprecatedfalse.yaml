@@ -1,4 +1,0 @@
-cloudflight:
-  spring:
-    security:
-      use-deprecated-websecurity-configurer: false
