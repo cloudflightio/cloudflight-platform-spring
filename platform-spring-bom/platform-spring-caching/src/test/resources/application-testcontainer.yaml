@@ -1,6 +1,4 @@
 spring:
-  session:
-    store-type: redis
   cache:
     redis:
       time-to-live: PT5M

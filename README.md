@@ -332,8 +332,39 @@ class QueryDslArtifactRepositoryImpl(                                           
 
 ### Caching
 
-TBD
+The module `platform-spring-caching` autoconfigures Redis Caches + Sessions for you. This happens automatically
+if it can find Redis on the classpath. You can do this with
 
+```kotlin
+dependencies {
+    implementation("io.cloudflight.platform.spring:platform-spring-caching")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    // for sessions
+    implementation("org.springframework.session:spring-session-data-redis")
+}
+```
+
+The [CachingAutoConfiguration](platform-spring-bom/src/main/kotlin/io/cloudflight/platform/spring/autoconfigure/CachingAutoConfiguration.kt)
+then registers a CacheErrorHandler that evicts keys when they can't be serialized.
+It also creates a default RedisCacheConfiguration that supports cache properties like `timeToLive`, `keyPrefix`
+and `isUseKeyPrefix`.
+It will create a default RedisTemplate with a JSON de/serializer if it cannot find a RedisTemplate.
+
+#### Session Handling
+
+If you have the `spring-session-core` and `spring-session-data-redis` dependencies on the classpath of
+your `WebApplication`,
+the [SessionAutoConfiguration](platform-spring-bom/src/main/kotlin/io/cloudflight/platform/spring/autoconfigure/SessionAutoConfiguration.kt)
+will automatically configure a RedisSessionRepository for you if you haven't already defined one. In the same manner it
+will create a SafeRedisSessionSerializer that warns you of non-deserializable sessions.
+
+> **_NOTE:_** The property spring.session.store-type was removed in Spring Boot 3, and so we have removed it as well.
+> The `SessionRepository` is identified by the presence of dependencies on the classpath in the following order:
+> 1. Redis (Our implementation)
+> 2. JDBC (from Spring Boot)
+> 3. Hazelcast (from Spring Boot)
+> 4. Mongo (from Spring Boot)
+> 5. If none of the above are available, no SessionRepository is configured.
 ### Scheduling
 
 The module `platform-spring-scheduling` integrates [Shedlock](https://github.com/lukas-krecan/ShedLock) with Spring-Boot by
