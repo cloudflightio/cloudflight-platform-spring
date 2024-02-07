@@ -3,14 +3,14 @@ package io.cloudflight.platform.spring.caching.autoconfigure
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.cloudflight.platform.spring.caching.serializer.SafeRedisSessionSerializer
 import io.cloudflight.platform.spring.json.ObjectMapperFactory
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.cache.CacheProperties
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
 import org.springframework.cache.annotation.CachingConfigurer
 import org.springframework.cache.annotation.EnableCaching
@@ -26,18 +26,16 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer
 import org.springframework.data.redis.serializer.RedisSerializer
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
 import java.time.Duration
 
 @AutoConfiguration(before = [RedisAutoConfiguration::class])
 @EnableCaching(order = 1000)
-@Import(CachingAutoConfiguration.RedisConfiguration::class, CachingAutoConfiguration.RedisSessionConfig::class)
+@Import(CachingAutoConfiguration.RedisConfiguration::class)
 class CachingAutoConfiguration {
-    /**
-     * Same condition as in RedisAutoConfiguration
-     */
+
     @Configuration
     @ConditionalOnClass(RedisOperations::class)
+    @ConditionalOnBean(RedisConnectionFactory::class)
     class RedisConfiguration : CachingConfigurer {
         @Bean
         override fun errorHandler(): CacheErrorHandler {
@@ -71,14 +69,14 @@ class CachingAutoConfiguration {
         }
 
         @Bean
-        fun platformRedisCacheManagerBuilderCustomizer(cacheConfiguration: RedisCacheConfiguration):
-                RedisCacheManagerBuilderCustomizer {
+        fun platformRedisCacheManagerBuilderCustomizer(): RedisCacheManagerBuilderCustomizer {
             return RedisCacheManagerBuilderCustomizer { builder ->
                 builder.transactionAware()
             }
         }
 
         @Bean
+        @ConditionalOnMissingBean(RedisTemplate::class)
         @Lazy
         fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<Any, Any> {
             return RedisTemplate<Any, Any>().apply {
@@ -93,16 +91,6 @@ class CachingAutoConfiguration {
 
                 afterPropertiesSet()
             }
-        }
-    }
-
-    @Configuration
-    @ConditionalOnProperty(value = ["spring.session.store-type"], havingValue = "redis")
-    @EnableRedisHttpSession
-    class RedisSessionConfig {
-        @Bean
-        fun springSessionDefaultRedisSerializer(): RedisSerializer<*> {
-            return SafeRedisSessionSerializer(RedisSerializer.java())
         }
     }
 
