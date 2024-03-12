@@ -1,14 +1,14 @@
 [versions]
-assertj = "3.24.2"
+assertj = "3.25.2"
 
 azure = "5.7.0"
 azure-identity = "1.10.4"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
-guava = "32.1.2-jre"
+guava = "32.1.3-jre"
 
-jgiven = "1.3.0"
-jupiter = "5.10.1"
+jgiven = "1.3.1"
+jupiter = "5.10.2"
 
 kotlin-logging = "3.0.5"
 
@@ -22,7 +22,7 @@ spring-boot = "3.2.3"
 spring-cloud = "2023.0.0"
 
 [libraries]
-archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.4.0" }
+archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.5.0" }
 
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
@@ -36,7 +36,7 @@ jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullab
 jgiven-html5-report = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
 jgiven-junit5 = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
 jgiven-spring-junit5 = { module = "com.tngtech.jgiven:jgiven-spring-junit5", version.ref = "jgiven" }
-jgiven-kotlin = { module = "io.toolisticon.testing:jgiven-kotlin", version = "1.2.5.0" }
+jgiven-kotlin = { module = "io.toolisticon.testing:jgiven-kotlin", version = "1.3.1.0" }
 
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
