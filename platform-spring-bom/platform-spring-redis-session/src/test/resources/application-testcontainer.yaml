@@ -1,0 +1,4 @@
+spring:
+  cache:
+    redis:
+      time-to-live: PT5M
