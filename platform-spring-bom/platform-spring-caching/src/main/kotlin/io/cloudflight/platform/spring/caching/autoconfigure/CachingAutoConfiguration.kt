@@ -3,6 +3,7 @@ package io.cloudflight.platform.spring.caching.autoconfigure
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.cloudflight.platform.spring.caching.RedisCacheErrorHandler
 import io.cloudflight.platform.spring.json.ObjectMapperFactory
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.AutoConfiguration
@@ -30,17 +31,25 @@ import java.time.Duration
 
 @AutoConfiguration(before = [RedisAutoConfiguration::class])
 @EnableCaching(order = 1000)
-@Import(CachingAutoConfiguration.RedisConfiguration::class)
+@Import(
+    CachingAutoConfiguration.RedisConfiguration::class,
+    CachingAutoConfiguration.RedisCachingConfigurerConfiguration::class
+)
 class CachingAutoConfiguration {
 
     @Configuration
     @ConditionalOnClass(RedisOperations::class)
     @ConditionalOnBean(RedisConnectionFactory::class)
-    class RedisConfiguration : CachingConfigurer {
+    class RedisCachingConfigurerConfiguration : CachingConfigurer {
         @Bean
         override fun errorHandler(): CacheErrorHandler {
-            return io.cloudflight.platform.spring.caching.RedisCacheErrorHandler()
+            return RedisCacheErrorHandler()
         }
+    }
+
+    @Configuration
+    @ConditionalOnClass(RedisOperations::class)
+    class RedisConfiguration {
 
         @Bean
         fun cacheConfiguration(cacheProperties: CacheProperties): RedisCacheConfiguration {
