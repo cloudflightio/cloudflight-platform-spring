@@ -5,7 +5,7 @@ import org.springframework.cache.Cache
 import org.springframework.cache.interceptor.SimpleCacheErrorHandler
 import org.springframework.data.redis.serializer.SerializationException
 
-class RedisCacheErrorHandler : SimpleCacheErrorHandler() {
+class EvictCacheErrorHandler : SimpleCacheErrorHandler() {
     override fun handleCacheGetError(exception: RuntimeException, cache: Cache, key: Any) {
         if (exception is SerializationException) {
             LOG.error("SerializationException during (de)serialization of value with key '$key' at cache ${cache.name} " +
@@ -17,6 +17,6 @@ class RedisCacheErrorHandler : SimpleCacheErrorHandler() {
     }
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(RedisCacheErrorHandler::class.java)
+        private val LOG = LoggerFactory.getLogger(EvictCacheErrorHandler::class.java)
     }
 }

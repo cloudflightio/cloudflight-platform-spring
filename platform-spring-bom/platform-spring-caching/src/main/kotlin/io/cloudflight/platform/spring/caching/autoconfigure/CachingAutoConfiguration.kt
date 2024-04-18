@@ -8,13 +8,10 @@ import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.cache.CacheProperties
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-import org.springframework.cache.annotation.CachingConfigurer
 import org.springframework.cache.annotation.EnableCaching
-import org.springframework.cache.interceptor.CacheErrorHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -32,15 +29,9 @@ import java.time.Duration
 @EnableCaching(order = 1000)
 @Import(CachingAutoConfiguration.RedisConfiguration::class)
 class CachingAutoConfiguration {
-
     @Configuration
     @ConditionalOnClass(RedisOperations::class)
-    @ConditionalOnBean(RedisConnectionFactory::class)
-    class RedisConfiguration : CachingConfigurer {
-        @Bean
-        override fun errorHandler(): CacheErrorHandler {
-            return io.cloudflight.platform.spring.caching.RedisCacheErrorHandler()
-        }
+    class RedisConfiguration {
 
         @Bean
         fun cacheConfiguration(cacheProperties: CacheProperties): RedisCacheConfiguration {
