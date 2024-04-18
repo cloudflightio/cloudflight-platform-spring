@@ -1,2 +1,3 @@
 io.cloudflight.platform.spring.caching.autoconfigure.CachingAutoConfiguration
 io.cloudflight.platform.spring.caching.autoconfigure.SessionAutoConfiguration
+io.cloudflight.platform.spring.caching.autoconfigure.CachingConfigurerAutoConfiguration

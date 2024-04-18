@@ -3,19 +3,15 @@ package io.cloudflight.platform.spring.caching.autoconfigure
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.cloudflight.platform.spring.caching.RedisCacheErrorHandler
 import io.cloudflight.platform.spring.json.ObjectMapperFactory
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.cache.CacheProperties
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-import org.springframework.cache.annotation.CachingConfigurer
 import org.springframework.cache.annotation.EnableCaching
-import org.springframework.cache.interceptor.CacheErrorHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -31,22 +27,8 @@ import java.time.Duration
 
 @AutoConfiguration(before = [RedisAutoConfiguration::class])
 @EnableCaching(order = 1000)
-@Import(
-    CachingAutoConfiguration.RedisConfiguration::class,
-    CachingAutoConfiguration.RedisCachingConfigurerConfiguration::class
-)
+@Import(CachingAutoConfiguration.RedisConfiguration::class)
 class CachingAutoConfiguration {
-
-    @Configuration
-    @ConditionalOnClass(RedisOperations::class)
-    @ConditionalOnBean(RedisConnectionFactory::class)
-    class RedisCachingConfigurerConfiguration : CachingConfigurer {
-        @Bean
-        override fun errorHandler(): CacheErrorHandler {
-            return RedisCacheErrorHandler()
-        }
-    }
-
     @Configuration
     @ConditionalOnClass(RedisOperations::class)
     class RedisConfiguration {
