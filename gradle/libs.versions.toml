@@ -18,8 +18,8 @@ opentelemetry = "1.30.1"
 
 shedlock = "5.9.1"
 
-spring-boot = "3.2.4"
-spring-cloud = "2023.0.0"
+spring-boot = "3.2.5"
+spring-cloud = "2023.0.1"
 
 [libraries]
 archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.5.0" }
