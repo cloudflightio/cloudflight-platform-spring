@@ -26,7 +26,7 @@ archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-
 
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
-awaitility = { module = "org.awaitility:awaitility", version = "4.2.0" }
+awaitility = { module = "org.awaitility:awaitility", version = "4.2.1" }
 
 azure-dependencies-bom = { module = "com.azure.spring:spring-cloud-azure-dependencies", version.ref = "azure" }
 azure-identity = { module = "com.azure:azure-identity", version.ref = "azure-identity" }
@@ -61,7 +61,7 @@ spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies"
 spring-cloud-bom = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 
 springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.0.0" }
-swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.11" }
+swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.14" }
 swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.15" }
 
 testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.2.1.Final" }
