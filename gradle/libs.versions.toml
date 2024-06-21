@@ -1,8 +1,8 @@
 [versions]
 assertj = "3.26.0"
 
-azure = "5.12.0"
-azure-identity = "1.12.2"
+azure = "5.13.0"
+azure-identity = "1.13.0"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
 guava = "33.2.1-jre"
@@ -14,7 +14,7 @@ kotlin-logging = "3.0.5"
 
 logstash = "7.4"
 
-opentelemetry = "1.38.0"
+opentelemetry = "1.39.0"
 
 shedlock = "5.13.0"
 
@@ -64,4 +64,4 @@ springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.
 swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.14" }
 swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.22" }
 
-testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.11.0" }
+testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.12.0" }
