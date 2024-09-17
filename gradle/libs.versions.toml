@@ -1,8 +1,8 @@
 [versions]
 assertj = "3.26.0"
 
-azure = "5.12.0"
-azure-identity = "1.12.2"
+azure = "5.16.0"
+azure-identity = "1.13.3"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
 guava = "33.2.1-jre"
@@ -18,8 +18,8 @@ opentelemetry = "1.38.0"
 
 shedlock = "5.13.0"
 
-spring-boot = "3.3.1"
-spring-cloud = "2023.0.2"
+spring-boot = "3.3.3"
+spring-cloud = "2023.0.3"
 
 [libraries]
 archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-verifier", version = "0.5.0" }
