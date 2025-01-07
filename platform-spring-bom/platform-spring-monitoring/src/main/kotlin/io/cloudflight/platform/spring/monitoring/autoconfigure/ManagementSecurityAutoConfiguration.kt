@@ -40,7 +40,7 @@ class ManagementSecurityAutoConfiguration {
                 disable()
             }
 
-            authorizeRequests {
+            authorizeHttpRequests {
                 authorize(EndpointRequest.toAnyEndpoint(), permitAll)
             }
         }
