@@ -18,11 +18,8 @@ class PlatformI18nAutoConfiguration : MessageSourceAutoConfiguration() {
     @Bean
     override fun messageSource(properties: MessageSourceProperties): MessageSource {
         val messageSource = PlatformMessageSourceImpl()
-        if (StringUtils.hasText(properties.basename)) {
-            messageSource.setBasenames(
-                *StringUtils
-                    .commaDelimitedListToStringArray(StringUtils.trimAllWhitespace(properties.basename))
-            )
+        if (properties.basename.isNotEmpty()) {
+            messageSource.setBasenames(*properties.basename.toTypedArray<String>())
         }
         if (properties.encoding != null) {
             messageSource.setDefaultEncoding(properties.encoding.name())

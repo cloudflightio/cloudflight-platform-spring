@@ -6,7 +6,7 @@ import org.springframework.boot.testcontainers.service.connection.ContainerConne
 
 class AzuriteContainerConnectionDetailsFactory :
     ContainerConnectionDetailsFactory<AzuriteContainer, AzuriteConnectionDetails>(
-        null,
+        emptyList(),
         "io.cloudflight.platform.spring.storage.azure.autoconfigure.PlatformAzureStorageBlobAutoConfiguration"
     ) {
 
