@@ -17,7 +17,7 @@ class AzuriteContainer(dockerImageName: DockerImageName) : GenericContainer<Azur
     val accountKey = AzuriteContainerConnectionDetailsFactory.ACCOUNT_KEY
 
     companion object {
-        private const val DEFAULT_IMAGE_NAME = "mcr.microsoft.com/azure-storage/azurite"
+        private const val DEFAULT_IMAGE_NAME = "mcr.microsoft.com/azure-storage/azurite:3.33.0"
 
         private const val AZURITE_PORT = 10000
     }
