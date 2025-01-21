@@ -628,7 +628,7 @@ a [Kotlin extension for JGiven](https://github.com/toolisticon/jgiven-kotlin) fo
 ### ArchUnit Support
 
 The module `io.cloudflight.platform.spring:platform-spring-test-archunit` embeds
-embeds the [ArchUnit CleanCode Verifier](https://github.com/cloudflightio/archunit-cleancode-verifier) and provides
+the [ArchUnit CleanCode Verifier](https://github.com/cloudflightio/archunit-cleancode-verifier) and provides
 an `AbstractCleanCodeTest` that you can use as follows:
 
 ````kotlin
