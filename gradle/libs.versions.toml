@@ -12,7 +12,7 @@ jupiter = "5.10.2"
 
 kotlin-logging = "3.0.5"
 
-logstash = "7.4"
+logstash = "8.0"
 
 opentelemetry = "1.38.0"
 
