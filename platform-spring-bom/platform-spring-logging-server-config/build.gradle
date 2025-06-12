@@ -3,6 +3,6 @@ dependencies {
 
     // encoder for JSON logging
     runtimeOnly(libs.logback.logstash.encoder)
-    // log splitter
-    runtimeOnly(libs.logback.length.splitter)
+
+    implementation(libs.logback.classic)
 }
