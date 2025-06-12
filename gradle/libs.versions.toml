@@ -46,7 +46,6 @@ guava = { module = "com.google.guava:guava", version.ref = "guava" }
 kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 
 logback-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash" }
-logback-length-splitter = { module = "com.latch:logback-length-splitting-appender", version = "0.4.0" }
 
 mockk = { module = "io.mockk:mockk-jvm", version = "1.13.11" }
 

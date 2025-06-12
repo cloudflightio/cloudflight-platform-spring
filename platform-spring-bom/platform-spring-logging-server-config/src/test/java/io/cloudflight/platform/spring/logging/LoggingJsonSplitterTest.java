@@ -8,13 +8,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+import org.slf4j.Marker;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.BasicMarkerFactory;
 
 public class LoggingJsonSplitterTest {
     private static final Logger LOG = LoggerFactory.getLogger(LoggingJsonSplitterTest.class);
     private final String originalLogbackFile = System.getProperty("logback.configurationFile");
-    private static final org.slf4j.Marker TEST_MARKER = new BasicMarkerFactory().getMarker("TEST_MARKER");
+    private static final Marker TEST_MARKER = new BasicMarkerFactory().getMarker("TEST_MARKER");
 
     @BeforeEach
     void setUp() {
@@ -49,6 +50,6 @@ public class LoggingJsonSplitterTest {
 
     @Test
     void logLongMessageWithJsonSplitterFails() {
-        Assertions.assertThrows(NoSuchMethodError.class, () -> LOG.info(TEST_MARKER, "This is a long message. ".repeat(1000)));
+        Assertions.assertDoesNotThrow(() -> LOG.info(TEST_MARKER, "This is a long message. ".repeat(1000)));
     }
 }
