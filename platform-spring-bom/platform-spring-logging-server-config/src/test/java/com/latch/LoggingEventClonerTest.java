@@ -21,8 +21,6 @@ public class LoggingEventClonerTest {
         this.loggingEventCloner = new LoggingEventCloner(loggerContext);
     }
 
-
-
     @Test
     public void correctlyClonesBasicEventProperties() {
         LoggingEvent event = createLoggingEventWithContext();
