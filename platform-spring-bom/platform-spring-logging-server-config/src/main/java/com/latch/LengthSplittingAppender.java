@@ -1,7 +1,9 @@
 package com.latch;
 
+import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,12 +61,13 @@ public class LengthSplittingAppender extends SplittingAppenderBase<ILoggingEvent
 
     @Override
     public List<ILoggingEvent> split(ILoggingEvent event) {
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         List<String> logMessages = splitString(event.getFormattedMessage(), getMaxLength());
 
         List<ILoggingEvent> splitLogEvents = new ArrayList<>(logMessages.size());
         for (int i = 0; i < logMessages.size(); i++) {
 
-            LoggingEvent partition = LoggingEventCloner.clone(event);
+            LoggingEvent partition = LoggingEventCloner.clone(event, loggerContext);
             Map<String, String> seqMDCPropertyMap = new HashMap<>(event.getMDCPropertyMap());
             seqMDCPropertyMap.put(getSequenceKey(), Integer.toString(i));
             partition.setMDCPropertyMap(seqMDCPropertyMap);

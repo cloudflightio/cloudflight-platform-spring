@@ -1,9 +1,11 @@
 package com.latch;
 
+import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -36,14 +38,15 @@ import java.util.stream.Collectors;
  * SOFTWARE.
  */
 public class LengthSplittingAppenderTest {
-
     private static final int MAX_MESSAGE_LENGTH = 50;
     private static final String BASE_STRING = "0123456789";
     private static final String LOREM_PATH = "logging_message.txt";
 
+    private final LoggerContext loggerContext;
     private final LengthSplittingAppender splitter;
 
     public LengthSplittingAppenderTest() {
+        this.loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         this.splitter = new LengthSplittingAppender();
         splitter.setMaxLength(MAX_MESSAGE_LENGTH);
         splitter.setSequenceKey("seq");
@@ -52,33 +55,26 @@ public class LengthSplittingAppenderTest {
 
     @Test
     public void testEmpty() {
-        LoggingEvent event = new LoggingEvent();
-        event.setMessage("");
+        LoggingEvent event = createLoggingEvent("");
         Assertions.assertFalse(splitter.shouldSplit(event));
     }
 
     @Test
     public void testLessThanMax() {
-        LoggingEvent event = new LoggingEvent();
-        event.setMessage(
-                String.join("", Collections.nCopies(1, BASE_STRING)));
+        LoggingEvent event = createLoggingEvent(String.join("", Collections.nCopies(1, BASE_STRING)));
         Assertions.assertFalse(splitter.shouldSplit(event));
     }
 
     @Test
     public void testEqualToMax() {
-        LoggingEvent event = new LoggingEvent();
-        event.setMessage(
-                String.join("", Collections.nCopies(5, BASE_STRING)));
+        LoggingEvent event = createLoggingEvent(String.join("", Collections.nCopies(5, BASE_STRING)));
         Assertions.assertEquals(MAX_MESSAGE_LENGTH, 5 * BASE_STRING.length());
         Assertions.assertFalse(splitter.shouldSplit(event));
     }
 
     @Test
     public void testGreaterThanMaxAndMultipleOfMax() {
-        LoggingEvent event = new LoggingEvent();
-        event.setMessage(
-                String.join("", Collections.nCopies(50, BASE_STRING)));
+        LoggingEvent event = createLoggingEvent(String.join("", Collections.nCopies(50, BASE_STRING)));
         Assertions.assertTrue(splitter.shouldSplit(event));
 
         List<ILoggingEvent> splitEvents = splitter.split(event);
@@ -90,9 +86,7 @@ public class LengthSplittingAppenderTest {
 
     @Test
     public void testGreaterThanMaxAndNotMultipleOfMax() {
-        LoggingEvent event = new LoggingEvent();
-        event.setMessage(
-                String.join("", Collections.nCopies(51, BASE_STRING)));
+        LoggingEvent event = createLoggingEvent(String.join("", Collections.nCopies(51, BASE_STRING)));
         Assertions.assertTrue(splitter.shouldSplit(event));
 
         List<ILoggingEvent> splitEvents = splitter.split(event);
@@ -105,12 +99,18 @@ public class LengthSplittingAppenderTest {
     @Test
     public void testSplitIntegrity() {
         String loremIpsum = readTextFromResource(LOREM_PATH);
-        LoggingEvent event = new LoggingEvent();
-        event.setMessage(loremIpsum);
+        LoggingEvent event = createLoggingEvent(loremIpsum);
 
         List<ILoggingEvent> splitEvents = splitter.split(event);
 
         Assertions.assertEquals(event.getFormattedMessage(), recreateMessage(splitEvents));
+    }
+
+    private LoggingEvent createLoggingEvent(String message) {
+        LoggingEvent event = new LoggingEvent();
+        event.setMessage(message);
+        event.setLoggerContext(loggerContext);
+        return event;
     }
 
     private String recreateMessage(List<ILoggingEvent> splitEvents) {
