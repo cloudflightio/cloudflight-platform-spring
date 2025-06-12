@@ -6,6 +6,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import org.slf4j.Marker;
 
 import java.util.List;
+import java.util.Map;
 
 /*
  * MIT License
@@ -31,20 +32,27 @@ import java.util.List;
  * SOFTWARE.
  */
 class LoggingEventCloner {
+    private final LoggerContext loggerContext;
 
-    static LoggingEvent clone(ILoggingEvent event, LoggerContext loggerContext) {
+    public LoggingEventCloner(LoggerContext loggerContext) {
+        this.loggerContext = loggerContext;
+    }
+
+    public LoggingEvent clone(ILoggingEvent event, String message, Map<String, String> mdcValueMap) {
         LoggingEvent logEventPartition = new LoggingEvent();
 
         logEventPartition.setLevel(event.getLevel());
         logEventPartition.setLoggerName(event.getLoggerName());
         logEventPartition.setTimeStamp(event.getTimeStamp());
         logEventPartition.setLoggerContextRemoteView(event.getLoggerContextVO());
-        logEventPartition.setLoggerContext(loggerContext);
+        logEventPartition.setLoggerContext(this.loggerContext);
         logEventPartition.setThreadName(event.getThreadName());
+        logEventPartition.setMessage(message);
+        logEventPartition.setMDCPropertyMap(mdcValueMap);
 
         List<Marker> eventMarkers = event.getMarkerList();
         if (eventMarkers != null && !eventMarkers.isEmpty()) {
-            logEventPartition.getMarkerList().addAll(eventMarkers);
+            eventMarkers.forEach(logEventPartition::addMarker);
         }
 
         if (event.hasCallerData()) {
