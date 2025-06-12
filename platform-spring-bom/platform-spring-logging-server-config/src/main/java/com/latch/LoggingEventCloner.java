@@ -39,26 +39,26 @@ class LoggingEventCloner {
     }
 
     public LoggingEvent clone(ILoggingEvent event, String message, Map<String, String> mdcValueMap) {
-        LoggingEvent logEventPartition = new LoggingEvent();
+        LoggingEvent newEvent = new LoggingEvent();
 
-        logEventPartition.setLevel(event.getLevel());
-        logEventPartition.setLoggerName(event.getLoggerName());
-        logEventPartition.setTimeStamp(event.getTimeStamp());
-        logEventPartition.setLoggerContextRemoteView(event.getLoggerContextVO());
-        logEventPartition.setLoggerContext(this.loggerContext);
-        logEventPartition.setThreadName(event.getThreadName());
-        logEventPartition.setMessage(message);
-        logEventPartition.setMDCPropertyMap(mdcValueMap);
+        newEvent.setLevel(event.getLevel());
+        newEvent.setLoggerName(event.getLoggerName());
+        newEvent.setTimeStamp(event.getTimeStamp());
+        newEvent.setLoggerContextRemoteView(event.getLoggerContextVO());
+        newEvent.setLoggerContext(this.loggerContext);
+        newEvent.setThreadName(event.getThreadName());
+        newEvent.setMessage(message);
+        newEvent.setMDCPropertyMap(mdcValueMap);
 
         List<Marker> eventMarkers = event.getMarkerList();
         if (eventMarkers != null && !eventMarkers.isEmpty()) {
-            eventMarkers.forEach(logEventPartition::addMarker);
+            eventMarkers.forEach(newEvent::addMarker);
         }
 
         if (event.hasCallerData()) {
-            logEventPartition.setCallerData(event.getCallerData());
+            newEvent.setCallerData(event.getCallerData());
         }
 
-        return logEventPartition;
+        return newEvent;
     }
 }

@@ -76,9 +76,9 @@ public class LengthSplittingAppender extends SplittingAppenderBase<ILoggingEvent
             Map<String, String> seqMDCPropertyMap = new HashMap<>(event.getMDCPropertyMap());
             seqMDCPropertyMap.put(getSequenceKey(), Integer.toString(i));
 
-            LoggingEvent partition = loggingEventCloner.clone(event, message, seqMDCPropertyMap);
+            LoggingEvent clonedEvent = loggingEventCloner.clone(event, message, seqMDCPropertyMap);
 
-            splitLogEvents.add(partition);
+            splitLogEvents.add(clonedEvent);
         }
 
         return splitLogEvents;
