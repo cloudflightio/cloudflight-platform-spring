@@ -4,5 +4,5 @@ dependencies {
     // encoder for JSON logging
     runtimeOnly(libs.logback.logstash.encoder)
 
-    implementation("ch.qos.logback:logback-classic")
+    implementation(libs.logback.classic)
 }

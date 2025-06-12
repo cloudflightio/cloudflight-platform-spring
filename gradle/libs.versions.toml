@@ -46,6 +46,7 @@ guava = { module = "com.google.guava:guava", version.ref = "guava" }
 kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 
 logback-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash" }
+logback-classic = { module = "ch.qos.logback:logback-classic" }
 
 mockk = { module = "io.mockk:mockk-jvm", version = "1.13.11" }
 
