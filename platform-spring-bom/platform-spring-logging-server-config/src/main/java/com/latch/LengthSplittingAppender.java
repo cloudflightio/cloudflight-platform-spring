@@ -34,6 +34,13 @@ import java.util.Map;
  * SOFTWARE.
  */
 public class LengthSplittingAppender extends SplittingAppenderBase<ILoggingEvent> {
+    private final LoggingEventCloner loggingEventCloner;
+
+    public LengthSplittingAppender() {
+        super();
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        this.loggingEventCloner = new LoggingEventCloner(loggerContext);
+    }
 
     private int maxLength;
     private String sequenceKey;
@@ -61,19 +68,17 @@ public class LengthSplittingAppender extends SplittingAppenderBase<ILoggingEvent
 
     @Override
     public List<ILoggingEvent> split(ILoggingEvent event) {
-        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         List<String> logMessages = splitString(event.getFormattedMessage(), getMaxLength());
 
         List<ILoggingEvent> splitLogEvents = new ArrayList<>(logMessages.size());
         for (int i = 0; i < logMessages.size(); i++) {
-
-            LoggingEvent partition = LoggingEventCloner.clone(event, loggerContext);
+            String message = logMessages.get(i);
             Map<String, String> seqMDCPropertyMap = new HashMap<>(event.getMDCPropertyMap());
             seqMDCPropertyMap.put(getSequenceKey(), Integer.toString(i));
-            partition.setMDCPropertyMap(seqMDCPropertyMap);
-            partition.setMessage(logMessages.get(i));
 
-            splitLogEvents.add(partition);
+            LoggingEvent clonedEvent = loggingEventCloner.clone(event, message, seqMDCPropertyMap);
+
+            splitLogEvents.add(clonedEvent);
         }
 
         return splitLogEvents;
@@ -85,7 +90,7 @@ public class LengthSplittingAppender extends SplittingAppenderBase<ILoggingEvent
 
         List<String> results = new ArrayList<>(remainder == 0 ? fullChunks : fullChunks + 1);
         for (int i = 0; i < fullChunks; i++) {
-            results.add(str.substring(i*chunkSize, i*chunkSize + chunkSize));
+            results.add(str.substring(i * chunkSize, i * chunkSize + chunkSize));
         }
         if (remainder != 0) {
             results.add(str.substring(str.length() - remainder));

@@ -6,6 +6,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import org.slf4j.Marker;
 
 import java.util.List;
+import java.util.Map;
 
 /*
  * MIT License
@@ -31,26 +32,33 @@ import java.util.List;
  * SOFTWARE.
  */
 class LoggingEventCloner {
+    private final LoggerContext loggerContext;
 
-    static LoggingEvent clone(ILoggingEvent event, LoggerContext loggerContext) {
-        LoggingEvent logEventPartition = new LoggingEvent();
+    public LoggingEventCloner(LoggerContext loggerContext) {
+        this.loggerContext = loggerContext;
+    }
 
-        logEventPartition.setLevel(event.getLevel());
-        logEventPartition.setLoggerName(event.getLoggerName());
-        logEventPartition.setTimeStamp(event.getTimeStamp());
-        logEventPartition.setLoggerContextRemoteView(event.getLoggerContextVO());
-        logEventPartition.setLoggerContext(loggerContext);
-        logEventPartition.setThreadName(event.getThreadName());
+    public LoggingEvent clone(ILoggingEvent event, String message, Map<String, String> mdcValueMap) {
+        LoggingEvent newEvent = new LoggingEvent();
+
+        newEvent.setLevel(event.getLevel());
+        newEvent.setLoggerName(event.getLoggerName());
+        newEvent.setTimeStamp(event.getTimeStamp());
+        newEvent.setLoggerContextRemoteView(event.getLoggerContextVO());
+        newEvent.setLoggerContext(this.loggerContext);
+        newEvent.setThreadName(event.getThreadName());
+        newEvent.setMessage(message);
+        newEvent.setMDCPropertyMap(mdcValueMap);
 
         List<Marker> eventMarkers = event.getMarkerList();
         if (eventMarkers != null && !eventMarkers.isEmpty()) {
-            logEventPartition.getMarkerList().addAll(eventMarkers);
+            eventMarkers.forEach(newEvent::addMarker);
         }
 
         if (event.hasCallerData()) {
-            logEventPartition.setCallerData(event.getCallerData());
+            newEvent.setCallerData(event.getCallerData());
         }
 
-        return logEventPartition;
+        return newEvent;
     }
 }
