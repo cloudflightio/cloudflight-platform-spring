@@ -34,13 +34,6 @@ import java.util.Map;
  * SOFTWARE.
  */
 public class LengthSplittingAppender extends SplittingAppenderBase<ILoggingEvent> {
-    private final LoggingEventCloner loggingEventCloner;
-
-    public LengthSplittingAppender() {
-        super();
-        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        this.loggingEventCloner = new LoggingEventCloner(loggerContext);
-    }
 
     private int maxLength;
     private String sequenceKey;
@@ -76,7 +69,7 @@ public class LengthSplittingAppender extends SplittingAppenderBase<ILoggingEvent
             Map<String, String> seqMDCPropertyMap = new HashMap<>(event.getMDCPropertyMap());
             seqMDCPropertyMap.put(getSequenceKey(), Integer.toString(i));
 
-            LoggingEvent clonedEvent = loggingEventCloner.clone(event, message, seqMDCPropertyMap);
+            LoggingEvent clonedEvent = LoggingEventCloner.clone(event, message, seqMDCPropertyMap);
 
             splitLogEvents.add(clonedEvent);
         }

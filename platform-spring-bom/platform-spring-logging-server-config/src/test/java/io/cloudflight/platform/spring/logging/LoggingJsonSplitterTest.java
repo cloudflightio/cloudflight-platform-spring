@@ -49,7 +49,7 @@ public class LoggingJsonSplitterTest {
     }
 
     @Test
-    void logLongMessageWithJsonSplitterFails() {
+    void logLongMessageWithJsonSplitterDoesNotFail() {
         Assertions.assertDoesNotThrow(() -> LOG.info(TEST_MARKER, "This is a long message. ".repeat(1000)));
     }
 }

@@ -3,6 +3,7 @@ package com.latch;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import java.util.List;
@@ -32,20 +33,16 @@ import java.util.Map;
  * SOFTWARE.
  */
 class LoggingEventCloner {
-    private final LoggerContext loggerContext;
+    private static LoggerContext loggerContext;
 
-    public LoggingEventCloner(LoggerContext loggerContext) {
-        this.loggerContext = loggerContext;
-    }
-
-    public LoggingEvent clone(ILoggingEvent event, String message, Map<String, String> mdcValueMap) {
+    public static LoggingEvent clone(ILoggingEvent event, String message, Map<String, String> mdcValueMap) {
         LoggingEvent newEvent = new LoggingEvent();
 
         newEvent.setLevel(event.getLevel());
         newEvent.setLoggerName(event.getLoggerName());
         newEvent.setTimeStamp(event.getTimeStamp());
         newEvent.setLoggerContextRemoteView(event.getLoggerContextVO());
-        newEvent.setLoggerContext(this.loggerContext);
+        newEvent.setLoggerContext(getLoggerContext());
         newEvent.setThreadName(event.getThreadName());
         newEvent.setMessage(message);
         newEvent.setMDCPropertyMap(mdcValueMap);
@@ -60,5 +57,16 @@ class LoggingEventCloner {
         }
 
         return newEvent;
+    }
+
+    /**
+     * We can't set the logger context directly because that would cause issues if the logger context is not initialized yet.
+     */
+    private static LoggerContext getLoggerContext() {
+        if (loggerContext == null) {
+            loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        }
+
+        return loggerContext;
     }
 }
