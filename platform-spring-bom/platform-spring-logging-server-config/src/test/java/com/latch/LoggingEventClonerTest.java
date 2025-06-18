@@ -13,14 +13,6 @@ import java.util.Collections;
 import java.util.Map;
 
 public class LoggingEventClonerTest {
-    private final LoggerContext loggerContext;
-    private final LoggingEventCloner loggingEventCloner;
-
-    public LoggingEventClonerTest() {
-        this.loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        this.loggingEventCloner = new LoggingEventCloner(loggerContext);
-    }
-
     @Test
     public void correctlyClonesBasicEventProperties() {
         LoggingEvent event = createLoggingEventWithContext();
@@ -29,7 +21,7 @@ public class LoggingEventClonerTest {
         event.setThreadName("testThread");
         event.setTimeStamp(System.currentTimeMillis());
 
-        LoggingEvent clonedEvent = loggingEventCloner.clone(event, "", Collections.emptyMap());
+        LoggingEvent clonedEvent = LoggingEventCloner.clone(event, "", Collections.emptyMap());
 
         Assertions.assertNotNull(clonedEvent);
         Assertions.assertEquals(event.getLevel(), clonedEvent.getLevel());
@@ -43,7 +35,7 @@ public class LoggingEventClonerTest {
         LoggingEvent event = createLoggingEventWithContext();
         String message = "Test message";
 
-        LoggingEvent clonedEvent = loggingEventCloner.clone(event, message, Collections.emptyMap());
+        LoggingEvent clonedEvent = LoggingEventCloner.clone(event, message, Collections.emptyMap());
 
         Assertions.assertNotNull(clonedEvent);
         Assertions.assertEquals(message, clonedEvent.getMessage());
@@ -54,7 +46,7 @@ public class LoggingEventClonerTest {
         LoggingEvent event = createLoggingEventWithContext();
         Map<String, String> mdcProperties = Map.of("key1", "value1", "key2", "value2");
 
-        LoggingEvent clonedEvent = loggingEventCloner.clone(event, "", mdcProperties);
+        LoggingEvent clonedEvent = LoggingEventCloner.clone(event, "", mdcProperties);
 
         Assertions.assertNotNull(clonedEvent);
         Map<String, String> clonedMDCProperties = clonedEvent.getMDCPropertyMap();
@@ -69,7 +61,7 @@ public class LoggingEventClonerTest {
         Marker marker = new BasicMarkerFactory().getMarker("TestMarker");
         event.addMarker(marker);
 
-        LoggingEvent clonedEvent = loggingEventCloner.clone(event, "", Collections.emptyMap());
+        LoggingEvent clonedEvent = LoggingEventCloner.clone(event, "", Collections.emptyMap());
 
         Assertions.assertNotNull(clonedEvent);
         Assertions.assertEquals(marker.getName(), clonedEvent.getMarkerList().get(0).getName());
@@ -83,7 +75,7 @@ public class LoggingEventClonerTest {
         };
         event.setCallerData(callerData);
 
-        LoggingEvent clonedEvent = loggingEventCloner.clone(event, "", Collections.emptyMap());
+        LoggingEvent clonedEvent = LoggingEventCloner.clone(event, "", Collections.emptyMap());
 
         Assertions.assertTrue(clonedEvent.hasCallerData());
         StackTraceElement[] clonedCallerData = clonedEvent.getCallerData();
@@ -93,6 +85,7 @@ public class LoggingEventClonerTest {
 
     private LoggingEvent createLoggingEventWithContext() {
         LoggingEvent event = new LoggingEvent();
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         event.setLoggerContext(loggerContext);
         return event;
     }
