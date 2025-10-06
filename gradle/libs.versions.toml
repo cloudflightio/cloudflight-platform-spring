@@ -1,11 +1,11 @@
 [versions]
-assertj = "3.26.0"
+assertj = "3.27.6"
 
 azure = "5.21.0"
-azure-identity = "1.15.4"
+azure-identity = "1.18.0"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
-guava = "33.2.1-jre"
+guava = "33.5.0-jre"
 
 jgiven = "1.3.1"
 jupiter = "5.11.4"
@@ -14,11 +14,11 @@ kotlin-logging = "3.0.5"
 
 logstash = "7.4"
 
-opentelemetry = "1.48.0"
+opentelemetry = "1.54.1"
 
-shedlock = "6.3.0"
+shedlock = "6.10.0"
 
-spring-boot = "3.4.5"
+spring-boot = "3.5.6"
 spring-cloud = "2024.0.1"
 
 [libraries]
@@ -26,12 +26,12 @@ archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-
 
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
-awaitility = { module = "org.awaitility:awaitility", version = "4.2.1" }
+awaitility = { module = "org.awaitility:awaitility", version = "4.3.0" }
 
 azure-dependencies-bom = { module = "com.azure.spring:spring-cloud-azure-dependencies", version.ref = "azure" }
 azure-identity = { module = "com.azure:azure-identity", version.ref = "azure-identity" }
 
-jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.6" }
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.7" }
 
 jgiven-html5-report = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
 jgiven-junit5 = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
@@ -48,7 +48,7 @@ kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.r
 logback-logstash-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstash" }
 logback-classic = { module = "ch.qos.logback:logback-classic" }
 
-mockk = { module = "io.mockk:mockk-jvm", version = "1.13.11" }
+mockk = { module = "io.mockk:mockk-jvm", version = "1.14.6" }
 
 opentelemetry-bom = { module = "io.opentelemetry:opentelemetry-bom", version.ref = "opentelemetry" }
 
@@ -61,7 +61,7 @@ spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies"
 spring-cloud-bom = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 
 springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.0.0" }
-swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.14" }
-swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.22" }
+swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.16" }
+swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.38" }
 
-testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.11.0" }
+testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.28.2" }
