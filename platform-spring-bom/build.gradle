@@ -48,6 +48,9 @@ subprojects { p ->
 
             testImplementation project(':platform-spring-test-bom:platform-spring-test-bdd')
 
+            // https://stackoverflow.com/a/79650948
+            testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
             if (p.plugins.hasPlugin(org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper)) {
                 kapt platform(project(':platform-spring-bom'))
             }
