@@ -1,22 +1,22 @@
 [versions]
-assertj = "3.26.0"
+assertj = "3.27.6"
 
-azure = "5.21.0"
-azure-identity = "1.15.4"
+azure = "5.23.0"
+azure-identity = "1.18.1"
 
 # we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
-guava = "33.2.1-jre"
+guava = "33.4.8-jre"
 
 jgiven = "1.3.1"
-jupiter = "5.11.4"
+jupiter = "5.14.1"
 
 kotlin-logging = "3.0.5"
 
 logstash = "7.4"
 
-opentelemetry = "1.48.0"
+opentelemetry = "1.56.0"
 
-shedlock = "6.3.0"
+shedlock = "6.10.0"
 
 spring-boot = "3.5.7"
 spring-cloud = "2025.0.0"
@@ -26,12 +26,12 @@ archunit-ccv = { module = "io.cloudflight.cleancode.archunit:archunit-cleancode-
 
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
-awaitility = { module = "org.awaitility:awaitility", version = "4.2.1" }
+awaitility = { module = "org.awaitility:awaitility", version = "4.3.0" }
 
 azure-dependencies-bom = { module = "com.azure.spring:spring-cloud-azure-dependencies", version.ref = "azure" }
 azure-identity = { module = "com.azure:azure-identity", version.ref = "azure-identity" }
 
-jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.6" }
+jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version = "0.2.8" }
 
 jgiven-html5-report = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
 jgiven-junit5 = { module = "com.tngtech.jgiven:jgiven-html5-report", version.ref = "jgiven" }
@@ -61,7 +61,7 @@ spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies"
 spring-cloud-bom = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 
 springfox-swagger2 = { module = "io.springfox:springfox-swagger2", version = "3.0.0" }
-swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.14" }
-swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.22" }
+swagger-annotations2 = { module = "io.swagger:swagger-annotations", version = "1.6.16" }
+swagger-annotations3 = { module = "io.swagger.core.v3:swagger-annotations", version = "2.2.40" }
 
-testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.11.0" }
+testcontainers-junit4-mock = { module = "io.quarkus:quarkus-junit4-mock", version = "3.29.3" }
