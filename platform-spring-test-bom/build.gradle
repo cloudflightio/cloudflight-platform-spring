@@ -37,6 +37,9 @@ subprojects {
     dependencies {
         // platform-spring-test-bom (and so all libraries from above) goes to the api classpath (implementation)
         implementation platform(project(':platform-spring-test-bom'))
+
+        // https://stackoverflow.com/a/79650948
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
 }
 
