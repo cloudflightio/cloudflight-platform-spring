@@ -11,7 +11,9 @@ dependencies {
 
     compileOnly 'org.springframework.security:spring-security-config'
     compileOnly 'org.springframework.security:spring-security-web'
+    // EndpointRequest moved to the spring-boot-security module in Spring Boot 4
+    compileOnly 'org.springframework.boot:spring-boot-security'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
 }

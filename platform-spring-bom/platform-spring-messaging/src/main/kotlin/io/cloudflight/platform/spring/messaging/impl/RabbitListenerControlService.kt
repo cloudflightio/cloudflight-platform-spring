@@ -15,7 +15,7 @@ internal class RabbitListenerControlService(
         private val processControlRegistry: ProcessControlRegistry?
 ) : ApplicationRunner, ApplicationListener<ProcessControlEvent> {
 
-    override fun run(args: ApplicationArguments?) {
+    override fun run(args: ApplicationArguments) {
         registry.listenerContainers.stream()
                 .map { c -> c as AbstractMessageListenerContainer }
                 .forEach { c -> c.setTaskExecutor(SimpleAsyncTaskExecutor(c.listenerId + "-")) }
@@ -33,6 +33,10 @@ internal class RabbitListenerControlService(
         if (event.actionId.startsWith(ACTION_PREFIX)) {
             val listenerId = event.actionId.substringAfter(ACTION_PREFIX)
             val container = registry.getListenerContainer(listenerId)
+            if (container == null) {
+                LOG.warn("No listener container found for $listenerId")
+                return
+            }
             if (event.enabled) {
                 LOG.info("Starting $listenerId")
                 container.start()

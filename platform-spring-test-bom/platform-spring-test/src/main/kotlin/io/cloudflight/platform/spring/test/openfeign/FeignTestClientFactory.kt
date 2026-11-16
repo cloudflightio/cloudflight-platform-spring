@@ -1,6 +1,6 @@
 package io.cloudflight.platform.spring.test.openfeign
 
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration
+import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration
 import org.springframework.cloud.openfeign.FeignAutoConfiguration
 import org.springframework.cloud.openfeign.FeignClientBuilder
 import org.springframework.cloud.openfeign.FeignClientsConfiguration

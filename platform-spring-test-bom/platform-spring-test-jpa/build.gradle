@@ -1,4 +1,6 @@
 dependencies {
     api project(':platform-spring-test-bom:platform-spring-test')
-    api 'org.quickperf:quick-perf-springboot2-sql-starter'
+
+    // @DataJpaTest, @AutoConfigureTestDatabase (not part of spring-boot-starter-test anymore as of Spring Boot 4)
+    api 'org.springframework.boot:spring-boot-data-jpa-test'
 }

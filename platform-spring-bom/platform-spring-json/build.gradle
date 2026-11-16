@@ -1,8 +1,9 @@
 dependencies {
+    // jackson-annotations keeps the com.fasterxml.jackson.core group in Jackson 3
     api('com.fasterxml.jackson.core:jackson-annotations')
-    api('com.fasterxml.jackson.core:jackson-databind')
+    api('tools.jackson.core:jackson-databind')
 
-    api('com.fasterxml.jackson.module:jackson-module-kotlin')
+    api('tools.jackson.module:jackson-module-kotlin')
 
     implementation('org.springframework.boot:spring-boot-starter-json')
 }

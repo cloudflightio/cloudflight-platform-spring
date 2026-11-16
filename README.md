@@ -11,6 +11,114 @@ The Cloudflight Platform serves as foundation for all Cloudflight custom softwar
 - Unified **Dependency Management** on top of Spring Boot and Spring Cloud
 - **Utility Modules** for cross-cutting-concerns like monitoring, JPA access, Elastic Search and much more that can (and should) be embedded into your production code
 
+The platform is based on Spring Boot 4 and requires **Java 21** or newer.
+
+## Upgrading to Spring Boot 4
+
+This version of the platform is based on Spring Boot 4.1 (Spring Framework 7, Spring Cloud 2025.1, Jackson 3, JUnit 6,
+Hibernate 7). Read the official [Spring Boot 4.0 Migration Guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide)
+and the [Spring Boot 4.1 Release Notes](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.1-Release-Notes)
+first. The following sections only cover what's specific to the platform or what we found most relevant for our projects.
+
+### Java 21
+
+The whole platform is now compiled for Java 21 (up to Spring Boot 3 it was Java 17), so your project needs Java 21 or newer.
+That's also required by JGiven 3 in `platform-spring-test-bdd` anyway, which is the only JGiven line that supports JUnit 6.
+
+### Removed: QuickPerf and Springfox
+
+* **QuickPerf** has been removed from `platform-spring-test` and `platform-spring-test-jpa`, as it doesn't support
+  Spring Boot 4 / JUnit 6 and is not maintained anymore. Annotations like `@ExpectSelect` don't exist anymore. To assert the number of SQL statements, use either
+  * **Hibernate statistics**: set `spring.jpa.properties.hibernate.generate_statistics=true` in your test configuration and
+    check the counters, e.g.
+
+    ````kotlin
+    val statistics = entityManagerFactory.unwrap(SessionFactory::class.java).statistics
+    statistics.clear()
+    repositoryService.getArtifact("foo", "bar")
+    assertThat(statistics.prepareStatementCount).isEqualTo(1)
+    ````
+  * or [datasource-proxy](https://github.com/jdbc-observations/datasource-proxy), which wraps the `DataSource` and counts
+    the queries per type (`QueryCountHolder.getGrandTotal().select`), also available as a Spring Boot starter
+    ([datasource-proxy-spring-boot-starter](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator), check for a
+    version compatible with Spring Boot 4).
+* **Springfox** (`io.springfox:springfox-swagger2`) is no longer managed by the BOM. It has been unmaintained for years and doesn't work
+  with Spring Boot 3+. Use [springdoc-openapi](https://springdoc.org) instead (`org.springdoc:springdoc-openapi-starter-webmvc-ui`
+  in a version that supports Spring Boot 4).
+
+### Jackson 3
+
+Spring Boot 4 uses Jackson 3, and so does the platform (`ObjectMapperFactory`, Redis cache serialization, RabbitMQ message conversion).
+
+* **New packages and coordinates:** `com.fasterxml.jackson.databind` → `tools.jackson.databind`, `com.fasterxml.jackson.core` →
+  `tools.jackson.core`, `com.fasterxml.jackson.module.kotlin` → `tools.jackson.module.kotlin` (Maven group `tools.jackson.*`).
+  The **annotations stay** in `com.fasterxml.jackson.annotation` (artifact `com.fasterxml.jackson.core:jackson-annotations`),
+  so `@JsonProperty`, `@JsonIgnore` & co. don't need to change.
+* **API changes:** mappers are immutable and configured via builders (`JsonMapper.builder()`). `ObjectMapperFactory.createObjectMapper()`
+  now returns a `tools.jackson.databind.json.JsonMapper`. `JsonProcessingException` became the unchecked `JacksonException`. Java time
+  support is built in (no `JavaTimeModule` anymore). Spring classes were renamed, e.g. `Jackson2ObjectMapperBuilderCustomizer` →
+  `JsonMapperBuilderCustomizer`, `MappingJackson2HttpMessageConverter` → `JacksonJsonHttpMessageConverter`,
+  `Jackson2JsonMessageConverter` → `JacksonJsonMessageConverter`, `GenericJackson2JsonRedisSerializer` → `GenericJacksonJsonRedisSerializer`.
+* **New default settings** (Jackson 2 → Jackson 3), among others:
+
+  | Setting | Jackson 2 | Jackson 3 |
+  |---|---|---|
+  | `MapperFeature.SORT_PROPERTIES_ALPHABETICALLY` | `false` | `true` |
+  | `DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES` | `true` | `false` |
+  | `DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES` | `false` | `true` |
+  | `DeserializationFeature.FAIL_ON_TRAILING_TOKENS` | `false` | `true` |
+  | `DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS` (formerly `SerializationFeature`) | `true` | `false` |
+  | `DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS` (formerly `SerializationFeature`) | `true` | `false` |
+  | `MapperFeature.DEFAULT_VIEW_INCLUSION` | `true` | `false` |
+  | `MapperFeature.USE_GETTERS_AS_SETTERS` | `true` | `false` |
+  | `MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS` | `true` | `false` |
+  | `SerializationFeature.FAIL_ON_EMPTY_BEANS` | `true` | `false` |
+
+  Spring Boot already deviated from some Jackson 2 defaults before. For the `JsonMapper` auto-configured by Spring Boot, you can restore
+  the previous behaviour with `spring.jackson.use-jackson2-defaults=true` as a transition aid. That property does not affect mappers you
+  create yourself, like `ObjectMapperFactory.createObjectMapper()`, which uses the plain Jackson 3 defaults. Check your JSON contracts
+  (property order, date formats, durations) with your API tests and clients.
+
+### Redis: flush cached data and sessions
+
+The serialization of the data in Redis changed: cache entries written with Spring Boot 3 (Jackson 2) can't be safely read with
+Spring Boot 4 (Jackson 3), and Java-serialized sessions are not compatible with the Spring Security / Spring Session 7 classes either.
+The `EvictCacheErrorHandler` and the `SafeRedisSessionSerializer` drop entries that fail to deserialize, but an old entry might also
+deserialize *successfully* into a different shape, which no fallback catches.
+
+**Take care of this when deploying the upgrade and flush the data in Redis if needed**, e.g.:
+
+* Stop all instances running the Spring Boot 3 version first, so they don't write the old format after the flush
+  (on Kubernetes e.g. scale to `0` or use the `Recreate` strategy for this release), then flush and start the new version.
+* Dedicated Redis database: `redis-cli -h <host> -p <port> -a <password> -n <db> FLUSHDB`
+  (for Azure Cache for Redis with TLS add `--tls -p 6380`, or use the *Flush data* action in the Azure Portal).
+* Shared Redis database: only delete your application's keys, i.e. the cache keys (`spring.cache.redis.key-prefix`, by default
+  `<cacheName>::`) and sessions (`spring:session:` or your `spring.session.redis.namespace`), e.g.
+  `redis-cli ... --scan --pattern 'spring:session:*' | xargs -r -n 500 redis-cli ... UNLINK`.
+* Alternatively, **bump the key prefixes** so old entries are never read again: change `spring.cache.redis.key-prefix`
+  (e.g. `myapp-v2::`) and `spring.session.redis.namespace` (e.g. `spring:session:myapp-v2`). Old entries then stay in Redis
+  until their time-to-live expires (or forever, if none is set).
+
+Either way, **all users have to log in again** after the upgrade, and caches start cold.
+
+### Web starter and test slices
+
+* The servlet web starter was renamed to `spring-boot-starter-webmvc` (`spring-boot-starter-web` is only a deprecated alias).
+  The platform modules don't bring a web stack or server anymore, so declare `spring-boot-starter-webmvc` in your server module yourself.
+* `spring-boot-starter-test` no longer contains the technology-specific test support (test slices). `platform-spring-test` adds
+  `spring-boot-webmvc-test` (`@WebMvcTest`, `@AutoConfigureMockMvc`) and `spring-boot-resttestclient` (`TestRestTemplate`),
+  `platform-spring-test-jpa` adds `spring-boot-data-jpa-test` (`@DataJpaTest`, `@AutoConfigureTestDatabase`). For other test slices, add
+  the according Spring Boot test starter (e.g. `spring-boot-starter-data-redis-test`), or use `spring-boot-starter-test-classic` as a
+  transition aid. The test annotations moved to technology-specific packages, e.g.
+  `org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc`.
+
+### JUnit 6 and JGiven
+
+JUnit was upgraded to version 6 (the `org.junit.jupiter` API stays the same) and JGiven to version 3. `platform-spring-test-bdd` now ships
+`jgiven-junit6` and `jgiven-spring-junit6`, and registers `com.tngtech.jgiven.junit6.JGivenExtension` automatically. If you reference JGiven
+classes directly, change the packages from `junit5` to `junit6`, e.g. `com.tngtech.jgiven.junit6.ScenarioTest` and
+`com.tngtech.jgiven.integration.spring.junit6.SpringScenarioTest`.
+
 ## Dependency Management & Usage
 
 The Cloudflight Platform comes with two BOM packages (bill-of-materials) that provide dependency management for all
@@ -80,6 +188,18 @@ dependencies {
     implementation('io.cloudflight.platform.spring:platform-spring-profiling')
 }
 ````
+
+> **_NOTE:_** The platform modules don't bring a web stack or server anymore. Up to Spring Boot 3, `platform-spring-i18n`,
+> `platform-spring-tracing` and `platform-spring-validation` pulled in `spring-boot-starter-web` (including Tomcat).
+> Your server module now has to declare it itself, using the Spring Boot 4 name of the starter:
+>
+> ````groovy
+> dependencies {
+>     implementation('org.springframework.boot:spring-boot-starter-webmvc')
+> }
+> ````
+>
+> The web-specific parts of those modules (`RequestLoggingFilter`, `I18nController`) are only registered in web applications.
 
 ### Server Configuration
 
@@ -350,6 +470,9 @@ It also creates a default RedisCacheConfiguration that supports cache properties
 and `isUseKeyPrefix`.
 It will create a default RedisTemplate with a JSON de/serializer if it cannot find a RedisTemplate.
 
+> **_NOTE:_** When upgrading from Spring Boot 3, the data in Redis may need to be flushed, see
+> [Redis: flush cached data and sessions](#redis-flush-cached-data-and-sessions).
+
 #### Session Handling
 
 If you have the `spring-session-core` and `spring-session-data-redis` dependencies on the classpath of
@@ -479,6 +602,16 @@ in your `logback-test.xml`.
 This module transitively gives you support to test Spring and Spring Boot applications (`spring-test` and `spring-boot-starter-test`),
 that means you can automatically use `@SpringBootTest` in your integration tests.
 
+As of Spring Boot 4, `spring-boot-starter-test` doesn't contain the technology-specific test support anymore, so this module
+additionally provides `spring-boot-webmvc-test` (`@WebMvcTest`, `@AutoConfigureMockMvc`) and `spring-boot-resttestclient`
+(`TestRestTemplate`, `RestTestClient`). It intentionally doesn't use `spring-boot-starter-webmvc-test`, as that would put the
+web server on the test classpath of all your modules. Note that the packages of those annotations changed in Spring Boot 4,
+e.g. `org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc`.
+
+For other technologies, add the according test module of Spring Boot yourself (e.g. `spring-boot-webflux-test`,
+`spring-boot-data-redis-test`), or use `spring-boot-starter-test-classic` as a transition aid, which brings
+the test support for all technologies like `spring-boot-starter-test` did up to Spring Boot 3.
+
 Include the module `platform-spring-test` as follows in your server module:
 
 ````groovy
@@ -544,30 +677,16 @@ class HelloWorldController : HelloWorldApi {                                    
 5. Any API from your -api-module
 6. The server implementation of your API
 
-#### QuickPerf
-
-Additionally, the module `platform-spring-test` comes with the great library [QuickPerf](https://github.com/quick-perf/doc/wiki/QuickPerf).
-QuickPerf is a testing library for Java to quickly evaluate and improve some performance-related properties. The QuickPerf extension
-is being registered by `platform-spring-test`, so you don't need to add `@QuickPerfTest` on your test classes.
-
-
 ### Test-Support for JPA
 
-The module `platform-spring-test-jpa` leverages QuickPerf support by also adding support to [profile SQL queries](https://github.com/quick-perf/doc/wiki/SQL-annotations).
+The module `platform-spring-test-jpa` provides `spring-boot-data-jpa-test`, which is not part of `spring-boot-starter-test`
+anymore as of Spring Boot 4. That way, you can use `@DataJpaTest` and `@AutoConfigureTestDatabase`:
 
-That way, you can write test methods like that:
-
-````kotlin
-@Test
-@ExpectSelect(1)
-fun getArtifact() {
-    repositoryService.getArtifact("foo", "bar")
+````groovy
+dependencies {
+    testImplementation 'io.cloudflight.platform.spring:platform-spring-test-jpa'
 }
 ````
-
-This test class will fail if the number of SQL queries being made within the body of that method is not equal to 1.
-Have a look at the [QuickPerf website](https://github.com/quick-perf/doc/wiki/SQL-annotations#Available-SQL-annotations)
-for all available annotations including configuration support.
 
 ### Test-Support for Testcontainers
 

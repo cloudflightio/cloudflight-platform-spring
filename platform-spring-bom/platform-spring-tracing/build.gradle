@@ -2,7 +2,15 @@ dependencies {
     implementation project(':platform-spring-bom:platform-spring-logging')
     api('io.opentelemetry:opentelemetry-api')
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // servlet-only module: the application decides about the web stack and server, the auto-configuration
+    // backs off if it's not a servlet web application
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+    compileOnly 'org.springframework:spring-webmvc'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // only for the inlined SecurityFilterProperties.DEFAULT_FILTER_ORDER constant
+    compileOnly 'org.springframework.boot:spring-boot-security'
 
     implementation(libs.logback.logstash.encoder)
 

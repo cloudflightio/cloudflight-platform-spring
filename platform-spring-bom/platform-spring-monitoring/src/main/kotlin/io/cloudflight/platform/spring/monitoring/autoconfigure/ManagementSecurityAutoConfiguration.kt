@@ -2,10 +2,10 @@ package io.cloudflight.platform.spring.monitoring.autoconfigure
 
 import io.cloudflight.platform.spring.context.ApplicationContextProfiles
 import org.springframework.boot.SpringApplication
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
+import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
-import org.springframework.boot.env.EnvironmentPostProcessor
+import org.springframework.boot.EnvironmentPostProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
@@ -53,7 +53,7 @@ class ManagementSecurityAutoConfiguration {
 }
 
 /**
- * Sets the port of the management endpoints to [server.port] - 1000
+ * Sets the port of the management endpoints to [server.port] + 10000
  */
 @Order(Ordered.LOWEST_PRECEDENCE)
 class ManagementServerPortEnvironmentPostProcessor : EnvironmentPostProcessor {

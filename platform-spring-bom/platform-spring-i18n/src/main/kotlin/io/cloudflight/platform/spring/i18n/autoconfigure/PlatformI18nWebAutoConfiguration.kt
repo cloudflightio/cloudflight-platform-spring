@@ -4,10 +4,16 @@ import io.cloudflight.platform.spring.i18n.I18nService
 import io.cloudflight.platform.spring.i18n.ListResourceBundleMessageSource
 import io.cloudflight.platform.spring.i18n.controller.I18nController
 import org.springframework.boot.autoconfigure.AutoConfiguration
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.web.bind.annotation.RestController
 
+// spring-web is only a compileOnly dependency, the application brings its own web stack
 @AutoConfiguration
+@ConditionalOnWebApplication
+@ConditionalOnClass(RestController::class)
 @ConditionalOnProperty(prefix = "cloudflight.i18n.httpendpoint", name = ["enabled"], matchIfMissing = true)
 class PlatformI18nWebAutoConfiguration {
 

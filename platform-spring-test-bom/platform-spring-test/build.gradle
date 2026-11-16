@@ -5,10 +5,16 @@ dependencies {
 
     api 'org.springframework:spring-test'
     api 'org.springframework.boot:spring-boot-starter-test'
+    // as of Spring Boot 4, spring-boot-starter-test doesn't contain the technology-specific test support anymore.
+    // We expose the narrow modules instead of spring-boot-starter-webmvc-test, which would put Tomcat on the
+    // test classpath of every module (and turn @SpringBootTests in non-web modules into servlet web tests)
+    api 'org.springframework.boot:spring-boot-webmvc-test'      // @WebMvcTest, @AutoConfigureMockMvc
+    api 'org.springframework.boot:spring-boot-resttestclient'   // TestRestTemplate, RestTestClient
     api 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-    api 'org.quickperf:quick-perf-junit5'
+    // HttpMessageConvertersAutoConfiguration moved here in Spring Boot 4
+    implementation 'org.springframework.boot:spring-boot-http-converter'
 
     testImplementation 'io.swagger:swagger-annotations'
-    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
 }

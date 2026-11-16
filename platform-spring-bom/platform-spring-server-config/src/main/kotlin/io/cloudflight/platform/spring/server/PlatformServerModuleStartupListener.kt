@@ -31,12 +31,13 @@ class PlatformServerModuleStartupListener(
 
     init {
         if (gitProperties != null && buildProperties != null) {
-            group = buildProperties.group
-            id = gitProperties.commitId
+            // the individual properties are nullable as of Spring Boot 4
+            group = buildProperties.group ?: "unknown"
+            id = gitProperties.commitId ?: "unknown"
             idShort = gitProperties.shortCommitId
             time = gitProperties.commitTime
-            name = buildProperties.name
-            version = buildProperties.version
+            name = buildProperties.name ?: "unknown"
+            version = buildProperties.version ?: "unknown"
         } else {
             val devProperties = ClassPathResource("development.properties")
             if (devProperties.exists()) {

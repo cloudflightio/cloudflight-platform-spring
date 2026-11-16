@@ -11,12 +11,15 @@ import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
 import org.springframework.util.StringUtils
 
+// MessageSourceAutoConfiguration is final as of Spring Boot 4, so we provide our own
+// messageSource bean instead of overriding; Boot's autoconfiguration backs off via its
+// @ConditionalOnMissingBean(name = "messageSource")
 @AutoConfiguration(before = [MessageSourceAutoConfiguration::class])
-@EnableConfigurationProperties(value = [I18nProperties::class])
-class PlatformI18nAutoConfiguration : MessageSourceAutoConfiguration() {
+@EnableConfigurationProperties(value = [I18nProperties::class, MessageSourceProperties::class])
+class PlatformI18nAutoConfiguration {
 
     @Bean
-    override fun messageSource(properties: MessageSourceProperties): MessageSource {
+    fun messageSource(properties: MessageSourceProperties): MessageSource {
         val messageSource = PlatformMessageSourceImpl()
         if (properties.basename.isNotEmpty()) {
             messageSource.setBasenames(*properties.basename.toTypedArray<String>())

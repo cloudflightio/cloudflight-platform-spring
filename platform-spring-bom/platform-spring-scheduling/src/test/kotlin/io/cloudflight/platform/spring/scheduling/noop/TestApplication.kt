@@ -1,7 +1,7 @@
 package io.cloudflight.platform.spring.scheduling.noop
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
 
-@SpringBootApplication(exclude = [RedisAutoConfiguration::class])
+@SpringBootApplication(exclude = [DataRedisAutoConfiguration::class])
 class TestApplication

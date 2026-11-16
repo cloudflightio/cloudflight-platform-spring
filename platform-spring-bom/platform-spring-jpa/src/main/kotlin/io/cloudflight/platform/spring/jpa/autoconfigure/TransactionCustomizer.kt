@@ -1,6 +1,6 @@
 package io.cloudflight.platform.spring.jpa.autoconfigure
 
-import org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizer
+import org.springframework.boot.transaction.autoconfigure.TransactionManagerCustomizer
 import org.springframework.transaction.support.AbstractPlatformTransactionManager
 
 class TransactionCustomizer(private val properties: TransactionProperties) : TransactionManagerCustomizer<AbstractPlatformTransactionManager> {

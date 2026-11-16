@@ -1,19 +1,19 @@
 package io.cloudflight.platform.spring.messaging.autoconfigure
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.cloudflight.platform.spring.messaging.MessageBrokerService
 import io.cloudflight.platform.spring.messaging.ProcessControlRegistry
 import io.cloudflight.platform.spring.messaging.impl.MessageBrokerServiceImpl
 import io.cloudflight.platform.spring.messaging.impl.RabbitListenerControlService
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
+import org.springframework.amqp.support.converter.JacksonJsonMessageConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.AutoConfiguration
-import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+import org.springframework.boot.amqp.autoconfigure.RabbitAutoConfiguration
 import org.springframework.context.annotation.Bean
+import tools.jackson.databind.json.JsonMapper
 
 /**
  * AutoConfiguration which adds support for asynchronous messaging via Spring Boot's AMQP support.
@@ -35,8 +35,8 @@ class PlatformMessagingAutoConfiguration {
     }
 
     @Bean
-    fun producerJackson2MessageConverter(objectMapper: ObjectMapper): Jackson2JsonMessageConverter {
-        return Jackson2JsonMessageConverter(objectMapper)
+    fun producerJacksonMessageConverter(jsonMapper: JsonMapper): JacksonJsonMessageConverter {
+        return JacksonJsonMessageConverter(jsonMapper)
     }
 
     @Bean

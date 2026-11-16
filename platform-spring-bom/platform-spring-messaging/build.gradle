@@ -4,7 +4,7 @@ dependencies {
 
     testImplementation project(':platform-spring-test-bom:platform-spring-test')
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'tools.jackson.core:jackson-databind'
 
     testRuntimeOnly 'com.h2database:h2'
 
@@ -17,7 +17,7 @@ dependencies {
 
     testImplementation project(':platform-spring-test-bom:platform-spring-test-testcontainers')
 
-    testImplementation("org.testcontainers:rabbitmq")
-    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers-rabbitmq")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
 }

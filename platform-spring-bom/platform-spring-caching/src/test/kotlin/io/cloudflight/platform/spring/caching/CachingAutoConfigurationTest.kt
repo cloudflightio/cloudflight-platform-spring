@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.springframework.boot.autoconfigure.AutoConfigurations
-import org.springframework.boot.autoconfigure.cache.CacheProperties
+import org.springframework.boot.cache.autoconfigure.CacheProperties
 import org.springframework.boot.test.context.runner.ApplicationContextRunner
 import org.springframework.cache.CacheManager
 import org.springframework.cache.annotation.EnableCaching

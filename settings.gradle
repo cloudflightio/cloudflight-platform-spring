@@ -1,5 +1,21 @@
+// autoconfigure-settings 1.2.0 bundles Kotlin Gradle Plugin 2.1.20 and compiles with
+// languageVersion derived from autoConfigure.kotlin.kotlinVersion (2.2). A 2.1.x compiler
+// treats language version 2.2 as pre-release and marks all published classes with the
+// pre-release metadata bit, which stable consumers refuse to load. Forcing the KGP here
+// upgrades the bundled 2.1.20 via conflict resolution so compiler, language version and
+// stdlib all align at 2.2.21. Remove once autoconfigure ships with Kotlin >= 2.2.
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.21"
+    }
+}
+
 plugins {
-    id "io.cloudflight.autoconfigure-settings" version "1.1.2"
+    id "io.cloudflight.autoconfigure-settings" version "1.2.0"
 }
 
 rootProject.name = 'cloudflight-platform-spring'

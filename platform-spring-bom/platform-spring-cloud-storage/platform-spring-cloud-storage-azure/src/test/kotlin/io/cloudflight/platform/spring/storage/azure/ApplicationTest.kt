@@ -1,7 +1,7 @@
 package io.cloudflight.platform.spring.storage.azure
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import tools.jackson.databind.ObjectMapper
+import tools.jackson.module.kotlin.readValue
 import io.cloudflight.platform.spring.context.ApplicationContextProfiles.TEST
 import io.cloudflight.platform.spring.json.ObjectMapperFactory
 import io.cloudflight.platform.spring.storage.dto.ObjectProperties

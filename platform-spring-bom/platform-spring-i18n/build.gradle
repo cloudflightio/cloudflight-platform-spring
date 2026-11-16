@@ -5,6 +5,9 @@ dependencies {
     testImplementation project(':platform-spring-test-bom:platform-spring-test')
 
     kapt 'org.springframework.boot:spring-boot-configuration-processor'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    // only needed for the optional I18nController, which is only registered in web applications
+    compileOnly 'org.springframework:spring-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    testImplementation 'org.springframework.boot:spring-boot-webmvc-test'
 }

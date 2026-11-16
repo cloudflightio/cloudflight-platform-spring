@@ -1,16 +1,13 @@
 package io.cloudflight.platform.spring.caching.autoconfigure
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.fasterxml.jackson.databind.ObjectMapper
-import io.cloudflight.platform.spring.json.ObjectMapperFactory
 import mu.KotlinLogging
 import org.springframework.boot.autoconfigure.AutoConfiguration
-import org.springframework.boot.autoconfigure.cache.CacheProperties
-import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer
+import org.springframework.boot.cache.autoconfigure.CacheProperties
+import org.springframework.boot.cache.autoconfigure.RedisCacheManagerBuilderCustomizer
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,12 +17,14 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisOperations
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
+import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer
 import org.springframework.data.redis.serializer.RedisSerializer
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator
+import tools.jackson.module.kotlin.kotlinModule
 import java.time.Duration
 
-@AutoConfiguration(before = [RedisAutoConfiguration::class])
+@AutoConfiguration(before = [DataRedisAutoConfiguration::class])
 @EnableCaching(order = 1000)
 @Import(CachingAutoConfiguration.RedisConfiguration::class)
 class CachingAutoConfiguration {
@@ -50,8 +49,8 @@ class CachingAutoConfiguration {
             } else {
                 config = config.entryTtl(timeToLive)
             }
-            if (cacheProperties.redis.keyPrefix != null) {
-                config = config.prefixCacheNameWith(cacheProperties.redis.keyPrefix)
+            cacheProperties.redis.keyPrefix?.let { keyPrefix ->
+                config = config.prefixCacheNameWith(keyPrefix)
             }
             if (!cacheProperties.redis.isUseKeyPrefix) {
                 config = config.disableKeyPrefix()
@@ -89,18 +88,28 @@ class CachingAutoConfiguration {
         private val JSON = createJsonSerializer()
         private val LOG = KotlinLogging.logger { }
 
-        internal fun createJsonSerializer(): GenericJackson2JsonRedisSerializer {
-            val objectMapper = ObjectMapperFactory
-                .createObjectMapper()
-                .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+        internal fun createJsonSerializer(): GenericJacksonJsonRedisSerializer {
+            // the cache only ever holds data written by the application itself, so a permissive
+            // type validator (matching the pre-Jackson-3 behaviour) is acceptable here
+            val typeValidator = BasicPolymorphicTypeValidator.builder()
+                .allowIfBaseType(Any::class.java)
+                .allowIfSubType { _, _ -> true }
+                .build()
 
-            objectMapper.activateDefaultTyping(
-                objectMapper.polymorphicTypeValidator,
-                ObjectMapper.DefaultTyping.EVERYTHING,
-                JsonTypeInfo.As.PROPERTY
-            )
-
-            return GenericJackson2JsonRedisSerializer(objectMapper)
+            // enableDefaultTyping installs Spring Data Redis' Kotlin-aware type resolver, which
+            // types everything except natural types — the equivalent of the Jackson 2
+            // DefaultTyping.EVERYTHING setup used before
+            return GenericJacksonJsonRedisSerializer.builder()
+                .enableSpringCacheNullValueSupport()
+                .enableDefaultTyping(typeValidator)
+                .customize { mapperBuilder ->
+                    mapperBuilder
+                        .addModule(kotlinModule())
+                        .changeDefaultPropertyInclusion {
+                            JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, JsonInclude.Include.USE_DEFAULTS)
+                        }
+                }
+                .build()
         }
     }
 }

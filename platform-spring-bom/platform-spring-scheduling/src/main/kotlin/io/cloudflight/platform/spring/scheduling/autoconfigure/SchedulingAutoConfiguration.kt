@@ -8,14 +8,14 @@ import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.scheduling.annotation.EnableScheduling
 
-@AutoConfiguration(after = [CachingAutoConfiguration::class, RedisAutoConfiguration::class])
+@AutoConfiguration(after = [CachingAutoConfiguration::class, DataRedisAutoConfiguration::class])
 @EnableScheduling
 @EnableSchedulerLock(defaultLockAtMostFor = "PT30S")
 @Import(value = [SchedulingAutoConfiguration.NoopConfiguration::class, SchedulingAutoConfiguration.RedisConfiguration::class])

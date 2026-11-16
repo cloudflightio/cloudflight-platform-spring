@@ -18,7 +18,6 @@ allprojects {
 dependencies {
     // platform-spring-test-bom should inherit from platform-spring-bom (thus, also from spring boot)
     api platform(project(':platform-spring-bom'))
-    api platform(libs.quickperf.bom)
 
     // with the following few lines we put some 3rd party libs automatically to the test-classpath of all
     // used projects.

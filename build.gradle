@@ -4,8 +4,12 @@ plugins {
 
 autoConfigure {
     java {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
         vendorName.set("Cloudflight")
+    }
+    kotlin {
+        // Spring Framework 7 / Boot 4 requires Kotlin >= 2.2
+        kotlinVersion.set("2.2.21")
     }
 }
 

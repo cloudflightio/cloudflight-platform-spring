@@ -9,12 +9,12 @@ dependencies {
 
     implementation 'com.azure:azure-identity'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
     testImplementation project(":platform-spring-bom:platform-spring-json")
-    testImplementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    testImplementation 'tools.jackson.module:jackson-module-kotlin'
 
     testImplementation project(':platform-spring-test-bom:platform-spring-test-testcontainers')
-    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation(libs.testcontainers.junit4.mock)
 

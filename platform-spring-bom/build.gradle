@@ -29,7 +29,6 @@ dependencies {
         // we provide the latest version of guava here, as queryDSL pulls in a very old (and vulnerable) version of guava, and we want to override that here
         api(libs.guava)
 
-        api(libs.springfox.swagger2)
         api(libs.swagger.annotations2)
         api(libs.swagger.annotations3)
 

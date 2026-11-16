@@ -8,11 +8,11 @@ import org.springframework.data.redis.serializer.SerializationException
  * @author Harald Radi (harald.radi@cloudflight.io)
  * @version 1.0
  */
-class SafeRedisSessionSerializer<T>(
+class SafeRedisSessionSerializer<T : Any>(
     private val serializer: RedisSerializer<T>
 ) : RedisSerializer<T> {
-    override fun serialize(t: T?): ByteArray? {
-        return serializer.serialize(t)
+    override fun serialize(value: T?): ByteArray {
+        return serializer.serialize(value)
     }
 
     override fun deserialize(bytes: ByteArray?): T? {
